@@ -7,7 +7,7 @@ A modern personal portfolio presenting my experience across **Java, enterprise s
 🌐 **View the portfolio:**  
 https://A-nu-1.github.io/anupamaportfolio/
 
-![Portfolio Home](./portfolio-home.png)
+![Portfolio Home](./src/assets/portfolio-home.png)
 
 ---
 
