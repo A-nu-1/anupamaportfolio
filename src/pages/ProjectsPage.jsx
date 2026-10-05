@@ -21,9 +21,20 @@ import luckysCommerce from "@/assets/projects/luckys-commerce.png";
 import luckysAdmin from "@/assets/projects/luckys-admin.png";
 import luckysMobile from "@/assets/projects/luckys-mobile.jpeg";
 import luckysAi from "@/assets/projects/luckys-ai.png";
+
+import akOrder from "@/assets/projects/ak-order.jpeg";
+import akCache from "@/assets/projects/ak-caching.jpeg";
+import akCalendar from "@/assets/projects/ak-calendar.jpeg";
+import akFirebase from "@/assets/projects/ak-firebasemessaging.jpeg";
+import akCloudinary from "@/assets/projects/ak-cloudinaryProtection.jpeg";
+
 import bhajansHome from "@/assets/projects/bhajans-home.png";
 import bhajansReader from "@/assets/projects/bhajans-reader.png";
 import bhajansLanguages from "@/assets/projects/bhajans-languages.png";
+import bhajansTransliterate from "@/assets/projects/bhajans-transliterate.png";
+import bhajansYoutube from "@/assets/projects/bhajans-youtubeIntegration.png";
+import bhajansCreate from "@/assets/projects/bhajans-bulk-paragraphs.png";
+
 
 import ecomHome from "@/assets/projects/ecom-home.png";
 import ecomCart from "@/assets/projects/ecom-cart.png";
@@ -52,6 +63,18 @@ const bhajansImages = [
   {
     src: bhajansLanguages,
     alt: "Bhajans language management",
+  },
+  {
+    src: bhajansTransliterate,
+    alt: "Bhajans transliteration through AI",
+  },
+  {
+    src: bhajansYoutube,
+    alt: "Bhajans YouTube integration",
+  },
+  {
+    src: bhajansCreate,
+    alt: "Bhajans bulk song creation helper",
   },
 ];
 
@@ -113,6 +136,26 @@ const commerceImages = [
     src: luckysMobile,
     alt: "Android commerce application",
   },
+  {
+    src: akOrder,
+    alt: "Order management and tracking", 
+  },
+  {
+    src: akCache,
+    alt: "Caching and performance",
+  },
+  {
+    src: akCalendar,
+    alt: "Calendar integration",
+  },
+  {
+    src: akFirebase,
+    alt: "Firebase messaging",
+  },
+  {
+    src: akCloudinary,
+    alt: "Cloudinary protection",
+  }
 ];
 
 const smallerProjects = [
@@ -181,14 +224,88 @@ function ProjectGallery({ images }) {
   const [index, setIndex] = useState(0);
   const [open, setOpen] = useState(false);
 
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchEndX, setTouchEndX] = useState(null);
+  const [isSwiping, setIsSwiping] = useState(false);
+
   const current = images[index];
 
+  const MIN_SWIPE_DISTANCE = 50;
+
   function previous() {
-    setIndex((value) => (value === 0 ? images.length - 1 : value - 1));
+    setIndex((value) =>
+      value === 0 ? images.length - 1 : value - 1,
+    );
   }
 
   function next() {
-    setIndex((value) => (value === images.length - 1 ? 0 : value + 1));
+    setIndex((value) =>
+      value === images.length - 1 ? 0 : value + 1,
+    );
+  }
+
+  function handleTouchStart(event) {
+    setTouchEndX(null);
+    setIsSwiping(false);
+
+    setTouchStartX(
+      event.targetTouches[0].clientX,
+    );
+  }
+
+  function handleTouchMove(event) {
+    const currentX =
+      event.targetTouches[0].clientX;
+
+    setTouchEndX(currentX);
+
+    if (touchStartX !== null) {
+      const distance = Math.abs(
+        touchStartX - currentX,
+      );
+
+      if (distance > 10) {
+        setIsSwiping(true);
+      }
+    }
+  }
+
+  function handleTouchEnd() {
+    if (
+      touchStartX === null ||
+      touchEndX === null
+    ) {
+      setTouchStartX(null);
+      setTouchEndX(null);
+
+      return;
+    }
+
+    const distance =
+      touchStartX - touchEndX;
+
+    if (distance > MIN_SWIPE_DISTANCE) {
+      next();
+    } else if (
+      distance < -MIN_SWIPE_DISTANCE
+    ) {
+      previous();
+    }
+
+    setTouchStartX(null);
+    setTouchEndX(null);
+
+    // Small delay so the click event after touch
+    // does not open the dialog accidentally.
+    setTimeout(() => {
+      setIsSwiping(false);
+    }, 100);
+  }
+
+  function handleImageClick() {
+    if (isSwiping) return;
+
+    setOpen(true);
   }
 
   return (
@@ -196,13 +313,17 @@ function ProjectGallery({ images }) {
       <div className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-950">
         <button
           type="button"
-          onClick={() => setOpen(true)}
-          className="group relative block aspect-[16/9] w-full overflow-hidden bg-zinc-900"
+          onClick={handleImageClick}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className="group relative block aspect-[16/9] w-full touch-pan-y overflow-hidden bg-zinc-900"
         >
           <img
             src={current.src}
             alt={current.alt}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            draggable="false"
+            className="h-full w-full select-none object-cover transition-transform duration-500 group-hover:scale-[1.02]"
           />
 
           <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10" />
@@ -228,8 +349,12 @@ function ProjectGallery({ images }) {
               <button
                 key={`${image.alt}-${imageIndex}`}
                 type="button"
-                onClick={() => setIndex(imageIndex)}
-                aria-label={`Show image ${imageIndex + 1}`}
+                onClick={() =>
+                  setIndex(imageIndex)
+                }
+                aria-label={`Show image ${
+                  imageIndex + 1
+                }`}
                 className={`h-1.5 rounded-full transition-all ${
                   imageIndex === index
                     ? "w-5 bg-purple-400"
@@ -250,15 +375,26 @@ function ProjectGallery({ images }) {
         </div>
       </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+      >
         <DialogContent className="max-h-[92vh] max-w-6xl border-white/10 bg-zinc-950 p-3 text-white">
-          <DialogTitle className="sr-only">Project screenshot</DialogTitle>
+          <DialogTitle className="sr-only">
+            Project screenshot
+          </DialogTitle>
 
-          <div className="relative flex min-h-[60vh] items-center justify-center overflow-hidden rounded-xl bg-black">
+          <div
+            className="relative flex min-h-[60vh] touch-pan-y items-center justify-center overflow-hidden rounded-xl bg-black"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <img
               src={current.src}
               alt={current.alt}
-              className="max-h-[84vh] max-w-full object-contain"
+              draggable="false"
+              className="max-h-[84vh] max-w-full select-none object-contain"
             />
 
             <button

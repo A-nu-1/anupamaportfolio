@@ -35,6 +35,7 @@ import bhajansCategories from "@/assets/projects/bhajans-categories.png";
 import bhajansTransliterate from "@/assets/projects/bhajans-transliterate.png";
 import bhajansBulkParagraphs from "@/assets/projects/bhajans-bulk-paragraphs.png";
 import bhajansLanguages from "@/assets/projects/bhajans-languages.png";
+import bhajansYoutube from "@/assets/projects/bhajans-youtubeIntegration.png";
 
 const gallery = [
   {
@@ -51,7 +52,7 @@ const gallery = [
   },
   {
     src: bhajansTransliterate,
-    title: "Kannada ↔ English transliteration",
+    title: "Kannada ↔ English transliteration AI tool",
   },
   {
     src: bhajansBulkParagraphs,
@@ -61,6 +62,10 @@ const gallery = [
     src: bhajansLanguages,
     title: "Language management",
   },
+  {
+    src: bhajansYoutube,
+    title: "YouTube integration",
+  }
 ];
 
 const highlights = [
@@ -94,7 +99,13 @@ function BhajansGallery() {
   const [index, setIndex] = useState(0);
   const [open, setOpen] = useState(false);
 
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchEndX, setTouchEndX] = useState(null);
+  const [isSwiping, setIsSwiping] = useState(false);
+
   const current = gallery[index];
+
+  const MIN_SWIPE_DISTANCE = 50;
 
   function previous() {
     setIndex((value) =>
@@ -108,18 +119,84 @@ function BhajansGallery() {
     );
   }
 
+  function handleTouchStart(event) {
+    setTouchEndX(null);
+    setIsSwiping(false);
+
+    setTouchStartX(
+      event.targetTouches[0].clientX,
+    );
+  }
+
+  function handleTouchMove(event) {
+    const currentX =
+      event.targetTouches[0].clientX;
+
+    setTouchEndX(currentX);
+
+    if (touchStartX !== null) {
+      const distance = Math.abs(
+        touchStartX - currentX,
+      );
+
+      if (distance > 10) {
+        setIsSwiping(true);
+      }
+    }
+  }
+
+  function handleTouchEnd() {
+    if (
+      touchStartX === null ||
+      touchEndX === null
+    ) {
+      setTouchStartX(null);
+      setTouchEndX(null);
+
+      return;
+    }
+
+    const distance =
+      touchStartX - touchEndX;
+
+    if (distance > MIN_SWIPE_DISTANCE) {
+      next();
+    } else if (
+      distance < -MIN_SWIPE_DISTANCE
+    ) {
+      previous();
+    }
+
+    setTouchStartX(null);
+    setTouchEndX(null);
+
+    setTimeout(() => {
+      setIsSwiping(false);
+    }, 100);
+  }
+
+  function handleImageClick() {
+    if (isSwiping) return;
+
+    setOpen(true);
+  }
+
   return (
     <>
       <div className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-950">
         <button
           type="button"
-          onClick={() => setOpen(true)}
-          className="group relative block aspect-[16/9] w-full overflow-hidden bg-zinc-900"
+          onClick={handleImageClick}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className="group relative block aspect-[16/9] w-full touch-pan-y overflow-hidden bg-zinc-900"
         >
           <img
             src={current.src}
             alt={current.title}
-            className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.01]"
+            draggable="false"
+            className="h-full w-full select-none object-contain transition-transform duration-500 group-hover:scale-[1.01]"
           />
 
           <div className="absolute bottom-4 right-4 flex items-center gap-2 rounded-full border border-white/10 bg-black/75 px-3 py-1.5 text-xs text-white backdrop-blur">
@@ -159,17 +236,26 @@ function BhajansGallery() {
         </div>
       </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+      >
         <DialogContent className="max-h-[92vh] max-w-6xl border-white/10 bg-zinc-950 p-3">
           <DialogTitle className="sr-only">
             {current.title}
           </DialogTitle>
 
-          <div className="relative flex min-h-[65vh] items-center justify-center overflow-hidden rounded-xl bg-black">
+          <div
+            className="relative flex min-h-[65vh] touch-pan-y items-center justify-center overflow-hidden rounded-xl bg-black"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <img
               src={current.src}
               alt={current.title}
-              className="max-h-[84vh] max-w-full object-contain"
+              draggable="false"
+              className="max-h-[84vh] max-w-full select-none object-contain"
             />
 
             <button

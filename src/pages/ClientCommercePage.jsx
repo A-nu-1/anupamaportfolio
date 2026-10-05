@@ -27,6 +27,12 @@ import luckysAdmin from "@/assets/projects/luckys-admin.png";
 import luckysMobile from "@/assets/projects/luckys-mobile.jpeg";
 import luckysAi from "@/assets/projects/luckys-ai.png";
 
+import akOrder from "@/assets/projects/ak-order.jpeg";
+import akCache from "@/assets/projects/ak-caching.jpeg";
+import akCalendar from "@/assets/projects/ak-calendar.jpeg";
+import akFirebase from "@/assets/projects/ak-firebasemessaging.jpeg";
+import akCloudinary from "@/assets/projects/ak-cloudinaryProtection.jpeg";
+
 const gallery = [
   {
     src: luckysStorefront,
@@ -48,6 +54,26 @@ const gallery = [
     src: luckysMobile,
     title: "Android application",
   },
+  {
+    src: akOrder,
+    title: "Order management",  
+  },
+  {
+    src: akCache, 
+    title: "Caching & performance",
+  },
+  {
+    src: akCalendar,
+    title: "Google Calendar integration",
+  },
+  {
+    src: akFirebase,
+    title: "Firebase push notifications",
+  },
+  {
+    src: akCloudinary,
+    title: "Cloudinary image protection",
+  }
 ];
 
 const capabilities = [
@@ -81,14 +107,86 @@ function CaseStudyGallery() {
   const [index, setIndex] = useState(0);
   const [open, setOpen] = useState(false);
 
+  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchEndX, setTouchEndX] = useState(null);
+  const [isSwiping, setIsSwiping] = useState(false);
+
   const current = gallery[index];
 
+  const MIN_SWIPE_DISTANCE = 50;
+
   function previous() {
-    setIndex((value) => (value === 0 ? gallery.length - 1 : value - 1));
+    setIndex((value) =>
+      value === 0 ? gallery.length - 1 : value - 1,
+    );
   }
 
   function next() {
-    setIndex((value) => (value === gallery.length - 1 ? 0 : value + 1));
+    setIndex((value) =>
+      value === gallery.length - 1 ? 0 : value + 1,
+    );
+  }
+
+  function handleTouchStart(event) {
+    setTouchEndX(null);
+    setIsSwiping(false);
+
+    setTouchStartX(
+      event.targetTouches[0].clientX,
+    );
+  }
+
+  function handleTouchMove(event) {
+    const currentX =
+      event.targetTouches[0].clientX;
+
+    setTouchEndX(currentX);
+
+    if (touchStartX !== null) {
+      const distance = Math.abs(
+        touchStartX - currentX,
+      );
+
+      if (distance > 10) {
+        setIsSwiping(true);
+      }
+    }
+  }
+
+  function handleTouchEnd() {
+    if (
+      touchStartX === null ||
+      touchEndX === null
+    ) {
+      setTouchStartX(null);
+      setTouchEndX(null);
+
+      return;
+    }
+
+    const distance =
+      touchStartX - touchEndX;
+
+    if (distance > MIN_SWIPE_DISTANCE) {
+      next();
+    } else if (
+      distance < -MIN_SWIPE_DISTANCE
+    ) {
+      previous();
+    }
+
+    setTouchStartX(null);
+    setTouchEndX(null);
+
+    setTimeout(() => {
+      setIsSwiping(false);
+    }, 100);
+  }
+
+  function handleImageClick() {
+    if (isSwiping) return;
+
+    setOpen(true);
   }
 
   return (
@@ -96,13 +194,17 @@ function CaseStudyGallery() {
       <div className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-950">
         <button
           type="button"
-          onClick={() => setOpen(true)}
-          className="group relative block aspect-[16/9] w-full overflow-hidden bg-zinc-900"
+          onClick={handleImageClick}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          className="group relative block aspect-[16/9] w-full touch-pan-y overflow-hidden bg-zinc-900"
         >
           <img
             src={current.src}
             alt={current.title}
-            className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-[1.01]"
+            draggable="false"
+            className="h-full w-full select-none object-contain transition-transform duration-500 group-hover:scale-[1.01]"
           />
 
           <div className="absolute bottom-4 right-4 flex items-center gap-2 rounded-full border border-white/10 bg-black/75 px-3 py-1.5 text-xs text-white backdrop-blur">
@@ -115,13 +217,16 @@ function CaseStudyGallery() {
           <button
             type="button"
             onClick={previous}
+            aria-label="Previous image"
             className="flex size-9 items-center justify-center rounded-lg text-zinc-400 hover:bg-white/5 hover:text-white"
           >
             <ChevronLeft className="size-4" />
           </button>
 
           <div className="text-center">
-            <p className="text-sm font-medium text-zinc-300">{current.title}</p>
+            <p className="text-sm font-medium text-zinc-300">
+              {current.title}
+            </p>
 
             <p className="mt-1 text-xs text-zinc-600">
               {index + 1} / {gallery.length}
@@ -131,6 +236,7 @@ function CaseStudyGallery() {
           <button
             type="button"
             onClick={next}
+            aria-label="Next image"
             className="flex size-9 items-center justify-center rounded-lg text-zinc-400 hover:bg-white/5 hover:text-white"
           >
             <ChevronRight className="size-4" />
@@ -138,20 +244,32 @@ function CaseStudyGallery() {
         </div>
       </div>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={setOpen}
+      >
         <DialogContent className="max-h-[92vh] max-w-6xl border-white/10 bg-zinc-950 p-3">
-          <DialogTitle className="sr-only">{current.title}</DialogTitle>
+          <DialogTitle className="sr-only">
+            {current.title}
+          </DialogTitle>
 
-          <div className="relative flex min-h-[65vh] items-center justify-center overflow-hidden rounded-xl bg-black">
+          <div
+            className="relative flex min-h-[65vh] touch-pan-y items-center justify-center overflow-hidden rounded-xl bg-black"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <img
               src={current.src}
               alt={current.title}
-              className="max-h-[84vh] max-w-full object-contain"
+              draggable="false"
+              className="max-h-[84vh] max-w-full select-none object-contain"
             />
 
             <button
               type="button"
               onClick={previous}
+              aria-label="Previous image"
               className="absolute left-3 flex size-11 items-center justify-center rounded-full bg-black/70 text-white"
             >
               <ChevronLeft className="size-5" />
@@ -160,6 +278,7 @@ function CaseStudyGallery() {
             <button
               type="button"
               onClick={next}
+              aria-label="Next image"
               className="absolute right-3 flex size-11 items-center justify-center rounded-full bg-black/70 text-white"
             >
               <ChevronRight className="size-5" />

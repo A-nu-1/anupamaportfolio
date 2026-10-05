@@ -32,6 +32,13 @@ const skillGroups = [
       "Unix",
       "Shell Scripting",
       "Enterprise Integration",
+      "APIs",
+      "Web Services",
+      "XML",
+      "JSON",
+      "SOAP",
+      "REST",
+      "JMS",
     ],
   },
   {
@@ -60,6 +67,7 @@ const skillGroups = [
       "Application services, relational data and secure backend workflows.",
     icon: Database,
     skills: [
+      "SQL",
       "Node.js",
       "PostgreSQL",
       "Supabase",
@@ -67,7 +75,6 @@ const skillGroups = [
       "Oracle",
       "MSSQL",
       "Authentication",
-      "Row Level Security",
     ],
   },
   {
@@ -96,6 +103,7 @@ const skillGroups = [
       "Vercel",
       "Firebase",
       "ImageKit",
+      "Cloudinary",
       "Agile",
       "Testing",
       "Configuration Management",

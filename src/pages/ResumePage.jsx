@@ -1,8 +1,189 @@
-import { useRef } from "react";
-import { Printer } from "lucide-react";
+import { useRef, useState } from "react";
+
+import { Check, ClipboardCopy, Download, Printer } from "lucide-react";
+
+const RESUME_TEXT = `
+ANUPAMA RAJENDRA
+
+Software Engineer · Java · Enterprise Integration · Full-Stack · Mobile
+
+Mägenwil, Aargau, Switzerland
+Work Authorization: Swiss C Permit
+Phone: +41 77 970 4370
+Email: rajendra.anupama@gmail.com
+
+
+PROFILE
+
+Software engineer with extensive experience in Java, enterprise integration and production systems, combined with recent hands-on development of modern web and Android applications.
+
+Experienced across development, automation, operations and complete product delivery.
+
+
+TECHNICAL SKILLS
+
+Core Engineering:
+Java, J2EE, Spring, Hibernate, OOP
+
+Database & SQL:
+SQL, PostgreSQL, Oracle, MSSQL
+
+Unix & Automation:
+Unix, Shell Scripting, production automation
+
+Web:
+React, Next.js, TypeScript, JavaScript, Tailwind CSS
+
+Mobile:
+React Native, Expo
+
+Backend:
+Node.js, Supabase, Prisma, REST APIs
+
+Integration:
+MQ, File Transfer, Enterprise Integration
+
+Tools:
+Git, GitHub, Firebase FCM, ImageKit, Vercel
+
+
+PROFESSIONAL EXPERIENCE
+
+01/2023 – Present
+
+Freelance / Independent Software Engineer
+Independent Software Development · Switzerland
+
+Continuing hands-on software engineering while balancing family responsibilities, with a focus on modern web, mobile and full-stack development.
+
+Design and build applications across frontend, backend, database, authentication, integrations, deployment and production operations.
+
+Work with technologies including React, Next.js, TypeScript, React Native, Expo, Node.js, PostgreSQL and Supabase.
+
+
+12/2017 – 12/2022
+
+Software Engineer · Production Support / Integration
+Credit Suisse · Cognizant Switzerland · Zürich, Switzerland
+
+Supported business-critical Java, SQL, UNIX Shell Scripting, MQ, file-transfer and Unix-based integration services in an SLA-driven production environment.
+
+Managed production incidents, monitoring and operational improvements, including automation of repetitive daily processes.
+
+
+04/2013 – 12/2017
+
+Software Engineer · Application Management / Java
+Credit Suisse · Cognizant Switzerland · Zürich, Switzerland
+
+Developed and supported Java/J2EE, MQ and file-transfer integration functionality.
+
+Worked across Unix applications, system integration testing, SQL / Oracle analysis and coordination with application and business teams.
+
+
+01/2013 – 04/2013
+
+Software Engineer · MES Gateway Development
+Meyer Burger · Switzerland
+
+Java-based manufacturing integration and MES gateway development for photovoltaic production systems.
+
+
+03/2010 – 10/2011
+
+Software Developer · Automatic Defect Classification
+Applied Materials · Bangalore, India
+
+Java software development for semiconductor wafer inspection and automatic defect-classification systems.
+
+Java development with Oracle / MSSQL-backed semiconductor software.
+
+
+07/2008 – 07/2009
+
+Trainee Software Engineer
+Cisco · India
+
+Java development for device-management functionality within Cisco WAAS Manager.
+
+
+SELECTED PROJECTS
+
+Client Commerce Platforms
+Lucky's Collection + A Home Cook · Web + Android · AI · Supabase · Firebase · caching
+
+Bhajans
+Multilingual devotional lyrics platform for my spiritual community · Web + Android
+
+Travel Planner
+Trip planning, itineraries, interactive maps and travel visualization
+
+
+EDUCATION
+
+2005 – 2009
+
+Bachelor of Engineering in Computer Science
+BNM Institute of Technology
+Visvesvaraya Technological University · India
+
+Graduated with Distinction
+Ranked among the top 3 in the state
+
+Prior education:
+12 years of school education in India
+10 years primary / secondary + 2 years higher secondary / pre-university
+
+
+LANGUAGES
+
+English — Fluent
+German — B1 Certified
+Kannada — Native
+Hindi — Fluent
+Telugu — Fluent
+Sanskrit — Fluent
+`.trim();
 
 export default function ResumePage() {
   const resumeRef = useRef(null);
+
+  const [copied, setCopied] = useState(false);
+
+  async function handleCopyResume() {
+    try {
+      await navigator.clipboard.writeText(RESUME_TEXT);
+
+      setCopied(true);
+
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Could not copy resume:", error);
+    }
+  }
+
+  function handleDownloadText() {
+    const blob = new Blob([RESUME_TEXT], {
+      type: "text/plain;charset=utf-8",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "Anupama_Rajendra_Resume.txt";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  }
 
   function handlePrint() {
     if (!resumeRef.current) return;
@@ -243,11 +424,38 @@ export default function ResumePage() {
 
   return (
     <main className="resume-screen min-h-screen bg-zinc-950 px-4 py-24 sm:px-6">
-      <div className="no-print mx-auto mb-6 flex max-w-[210mm] justify-end">
+      <div className="no-print mx-auto mb-6 flex max-w-[210mm] flex-wrap justify-end gap-3">
+        <button
+          type="button"
+          onClick={handleCopyResume}
+          className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.04] px-4 py-2 text-sm font-medium text-zinc-200 transition hover:bg-white/10"
+        >
+          {copied ? (
+            <>
+              <Check className="size-4 text-emerald-400" />
+              Copied!
+            </>
+          ) : (
+            <>
+              <ClipboardCopy className="size-4" />
+              Copy Resume
+            </>
+          )}
+        </button>
+
+        <button
+          type="button"
+          onClick={handleDownloadText}
+          className="inline-flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.04] px-4 py-2 text-sm font-medium text-zinc-200 transition hover:bg-white/10"
+        >
+          <Download className="size-4" />
+          Download TXT
+        </button>
+
         <button
           type="button"
           onClick={handlePrint}
-          className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-medium text-black"
+          className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2 text-sm font-medium text-black transition hover:bg-zinc-100"
         >
           <Printer className="size-4" />
           Print Resume
@@ -358,8 +566,8 @@ export default function ResumePage() {
           <h2>Professional Experience</h2>
 
           {/* =====================================================
-      CURRENT
-  ===================================================== */}
+            CURRENT
+          ===================================================== */}
           <div className="resume-job resume-job-featured">
             <div className="resume-job-heading">
               <div>
@@ -396,8 +604,8 @@ export default function ResumePage() {
           </div>
 
           {/* =====================================================
-      CREDIT SUISSE — PRODUCTION SUPPORT / INTEGRATION
-  ===================================================== */}
+            CREDIT SUISSE — PRODUCTION SUPPORT / INTEGRATION
+           ===================================================== */}
           <div className="resume-job">
             <div className="resume-job-heading">
               <div>
@@ -461,8 +669,8 @@ export default function ResumePage() {
           </div>
 
           {/* =====================================================
-      EARLIER EXPERIENCE
-  ===================================================== */}
+             EARLIER EXPERIENCE
+          ===================================================== */}
           <div className="resume-job">
             <div className="resume-job-heading">
               <div>
@@ -474,14 +682,12 @@ export default function ResumePage() {
               <strong>01/2013 – 04/2013</strong>
             </div>
 
-            <p className="resume-job-summary">
-              <ul>
-                <li>
-                  Java-based manufacturing integration and MES gateway
-                  development for photovoltaic production systems.
-                </li>
-              </ul>
-            </p>
+            <ul>
+              <li>
+                Java-based manufacturing integration and MES gateway development
+                for photovoltaic production systems.
+              </li>
+            </ul>
           </div>
 
           <div className="resume-job">
@@ -495,18 +701,17 @@ export default function ResumePage() {
               <strong>03/2010 – 10/2011</strong>
             </div>
 
-            <p className="resume-job-summary">
-              <ul>
-                <li>
-                  Java software development for semiconductor wafer inspection
-                  and automatic defect-classification systems.
-                </li>
-                <li>
-                  Java development with Oracle / MSSQL-backed semiconductor
-                  software.
-                </li>
-              </ul>
-            </p>
+            <ul>
+              <li>
+                Java software development for semiconductor wafer inspection and
+                automatic defect-classification systems.
+              </li>
+
+              <li>
+                Java development with Oracle / MSSQL-backed semiconductor
+                software.
+              </li>
+            </ul>
           </div>
 
           <div className="resume-job">
@@ -520,14 +725,12 @@ export default function ResumePage() {
               <strong>07/2008 – 07/2009</strong>
             </div>
 
-            <p className="resume-job-summary">
-              <ul>
-                <li>
-                  Java development for device-management functionality within
-                  Cisco WAAS Manager.
-                </li>
-              </ul>
-            </p>
+            <ul>
+              <li>
+                Java development for device-management functionality within
+                Cisco WAAS Manager.
+              </li>
+            </ul>
           </div>
         </section>
 
@@ -585,8 +788,9 @@ export default function ResumePage() {
               </span>
 
               <span>
-                <strong>Prior education:</strong> 12 years of school education in India (10 years
-                primary/secondary + 2 years higher secondary / pre-university)
+                <strong>Prior education:</strong> 12 years of school education
+                in India (10 years primary/secondary + 2 years higher secondary
+                / pre-university)
               </span>
             </div>
 
@@ -603,10 +807,10 @@ export default function ResumePage() {
           <p>
             <strong>English:</strong> Fluent &nbsp; · &nbsp;
             <strong>German:</strong> B1 Certified &nbsp; · &nbsp;
-            <strong>Kannada:</strong> Native &nbsp; · &nbsp; 
+            <strong>Kannada:</strong> Native &nbsp; · &nbsp;
             <strong>Hindi:</strong> Fluent &nbsp; · &nbsp;
             <strong>Telugu:</strong> Fluent &nbsp; · &nbsp;
-            <strong>Sanskrit:</strong> Fluent            
+            <strong>Sanskrit:</strong> Fluent
           </p>
         </section>
       </article>
