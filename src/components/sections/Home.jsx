@@ -66,6 +66,7 @@ export const Home = () => {
               <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
                 <Button
                   size="lg"
+                  nativeButton={false}
                   render={<Link to="/projects" />}
                   className="min-w-40 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white shadow-lg shadow-purple-950/20 transition-transform hover:-translate-y-0.5"
                 >
@@ -75,6 +76,7 @@ export const Home = () => {
 
                 <Button
                   size="lg"
+                  nativeButton={false}
                   variant="outline"
                   render={<Link to="/experience" />}
                   className="min-w-40 border-white/15 bg-white/[0.02] text-zinc-200 hover:bg-white/[0.07] hover:text-white"

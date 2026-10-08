@@ -51,6 +51,13 @@ import travelGlobe from "@/assets/projects/travel-globe.png";
 
 import storeStories from "@/assets/projects/store-stories.jpeg";
 
+import supportdeskHome from "@/assets/projects/supportdesk-home.png";
+import supportdeskLogin from "@/assets/projects/supportdesk-login.png";
+import supportdeskEmployee from "@/assets/projects/supportdesk-employee-tickets.png";
+import supportdeskAgent from "@/assets/projects/supportdesk-agent-tickets.png";
+import supportdeskTicket from "@/assets/projects/supportdesk-ticket-detail.png";
+import supportdeskAdmin from "@/assets/projects/supportdesk-admin.png";
+
 const bhajansImages = [
   {
     src: bhajansHome,
@@ -158,7 +165,51 @@ const commerceImages = [
   }
 ];
 
+const supportdeskImages = [
+  {
+    src: supportdeskHome,
+    alt: "SupportDesk homepage",
+  },
+  {
+    src: supportdeskLogin,
+    alt: "SupportDesk login and demo access",
+  },
+  {
+    src: supportdeskEmployee,
+    alt: "SupportDesk employee ticket dashboard",
+  },
+  {
+    src: supportdeskAgent,
+    alt: "SupportDesk support agent ticket dashboard",
+  },
+  {
+    src: supportdeskTicket,
+    alt: "SupportDesk ticket details and comments",
+  },
+  {
+    src: supportdeskAdmin,
+    alt: "SupportDesk administration dashboard",
+  },
+];
+
 const smallerProjects = [
+  {
+  title: "SupportDesk",
+  description:
+    "A full-stack IT support ticket system with role-based workflows for employees, support agents and administrators, built to explore enterprise-style application architecture.",
+  tags: [
+    "Java",
+    "Spring Boot",
+    "Angular",
+    "PostgreSQL",
+    "Spring Security",
+    "JWT",
+    "Docker",
+  ],
+  href: "https://github.com/A-nu-1/supportdesk-backend",
+  live: "https://supportdesk-frontend-fawn.vercel.app/",
+  images: supportdeskImages,
+},
   {
     title: "Travel Planner",
     description:
@@ -219,6 +270,8 @@ const smallerProjects = [
     ],
   },
 ];
+
+
 
 function ProjectGallery({ images }) {
   const [index, setIndex] = useState(0);

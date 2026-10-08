@@ -71,6 +71,7 @@ export const HomeOverview = () => {
 
                 <Button
                   variant="link"
+                  nativeButton={false}
                   render={<Link to="/about" />}
                   className="mt-6 h-auto p-0 text-purple-300 hover:text-purple-200"
                 >
@@ -107,6 +108,7 @@ export const HomeOverview = () => {
 
               <Button
                 variant="outline"
+                nativeButton={false}
                 render={<Link to="/projects" />}
                 className="border-white/15 bg-white/[0.02] text-zinc-200"
               >
@@ -163,6 +165,7 @@ export const HomeOverview = () => {
 
                   <Button
                     variant="link"
+                    nativeButton={false}
                     render={<Link to="/projects/client-commerce" />}
                     className="mt-7 h-auto p-0 text-purple-300"
                   >
@@ -218,6 +221,7 @@ export const HomeOverview = () => {
 
                   <Button
                     variant="link"
+                    nativeButton={false}
                     render={<Link to="/projects/bhajans" />}
                     className="mt-7 h-auto p-0 text-blue-300"
                   >
@@ -255,6 +259,7 @@ export const HomeOverview = () => {
 
                 <Button
                   variant="outline"
+                  nativeButton={false}
                   render={<Link to="/experience" />}
                   className="mt-8 border-white/15 bg-white/[0.02] text-zinc-200"
                 >
@@ -319,6 +324,7 @@ export const HomeOverview = () => {
 
               <Button
                 size="lg"
+                nativeButton={false}
                 render={<Link to="/contact" />}
                 className="relative mt-8 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white"
               >
