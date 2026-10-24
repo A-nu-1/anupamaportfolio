@@ -17,6 +17,7 @@ import ProjectsPage from "./pages/ProjectsPage";
 import ResumePage from "./pages/ResumePage";
 import ClientCommercePage from "./pages/ClientCommercePage";
 import BhajansProjectPage from "./pages/BhajansProjectPage";
+import { LanguageProvider } from "./i18n/LanguageContext";
 
 function HomePage() {
   return (
@@ -27,7 +28,7 @@ function HomePage() {
   );
 }
 
-function App() {
+function AppContent() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const handleLoadingComplete = useCallback(() => {
@@ -68,6 +69,14 @@ function App() {
         </Routes>
       </div>
     </>
+  );
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 

@@ -1,3 +1,4 @@
+
 import { Link, NavLink } from "react-router-dom";
 import { Menu } from "lucide-react";
 
@@ -10,41 +11,55 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
+import { useLanguage } from "@/i18n/useLanguage";
+
 const navItems = [
-  {
-    label: "Home",
-    to: "/",
-  },
-  {
-    label: "About",
-    to: "/about",
-  },
-  {
-    label: "Experience",
-    to: "/experience",
-  },
-  {
-    label: "Projects",
-    to: "/projects",
-  },
-  {
-    label: "Resume",
-    to: "/resume",
-  },
-  {
-    label: "Contact",
-    to: "/contact",
-  },
+  { key: "home", to: "/" },
+  { key: "about", to: "/about" },
+  { key: "experience", to: "/experience" },
+  { key: "projects", to: "/projects" },
+  { key: "resume", to: "/resume" },
+  { key: "contact", to: "/contact" },
 ];
 
+function LanguageToggle() {
+  const { language, setLanguage } = useLanguage();
+
+  return (
+    <div className="flex items-center gap-1 rounded-full border border-white/15 bg-white/5 p-1">
+      {["en", "de"].map((lang) => (
+        <button
+          key={lang}
+          type="button"
+          onClick={() => setLanguage(lang)}
+          aria-pressed={language === lang}
+          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-all ${
+            language === lang
+              ? "bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white"
+              : "text-zinc-400 hover:text-white"
+          }`}
+        >
+          {lang.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export const Navbar = () => {
+  const { language,  t } = useLanguage();
+
+  const localizedPath = (path) =>
+    language === "de" ? `${path}?lang=de` : path;
+
+ 
+
   return (
     <nav className="fixed top-0 z-50 w-full border-b border-white/10 bg-black/75 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-6 lg:px-8">
-
         {/* Logo */}
         <Link
-          to="/"
+          to={localizedPath("/")}
           className="group flex flex-col"
         >
           <div className="font-mono text-lg font-bold tracking-tight text-white sm:text-xl">
@@ -60,11 +75,11 @@ export const Navbar = () => {
         </Link>
 
         {/* Desktop navigation */}
-        <div className="hidden items-center gap-7 md:flex">
+        <div className="hidden items-center gap-5 md:flex">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
-              to={item.to}
+              to={localizedPath(item.to)}
               end={item.to === "/"}
               className={({ isActive }) =>
                 [
@@ -77,7 +92,7 @@ export const Navbar = () => {
             >
               {({ isActive }) => (
                 <>
-                  {item.label}
+                  {t.nav[item.key]}
 
                   {isActive && (
                     <span className="absolute -bottom-2 left-0 h-px w-full bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500" />
@@ -86,6 +101,8 @@ export const Navbar = () => {
               )}
             </NavLink>
           ))}
+
+          <LanguageToggle />
         </div>
 
         {/* Mobile navigation */}
@@ -118,10 +135,14 @@ export const Navbar = () => {
               </SheetHeader>
 
               <div className="flex flex-col gap-2 px-4 pt-6">
+                <div className="mb-4 flex justify-center">
+                  <LanguageToggle />
+                </div>
+
                 {navItems.map((item) => (
                   <NavLink
                     key={item.to}
-                    to={item.to}
+                    to={localizedPath(item.to)}
                     end={item.to === "/"}
                     className={({ isActive }) =>
                       [
@@ -132,7 +153,7 @@ export const Navbar = () => {
                       ].join(" ")
                     }
                   >
-                    {item.label}
+                    {t.nav[item.key]}
                   </NavLink>
                 ))}
               </div>

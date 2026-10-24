@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 import {
@@ -15,19 +16,15 @@ import {
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-
 import { RevealOnScroll } from "@/components/RevealOnScroll";
+import { useLanguage } from "@/i18n/useLanguage";
 
 import bhajansHome from "@/assets/projects/bhajans-home.png";
 import bhajansReader from "@/assets/projects/bhajans-reader.png";
@@ -37,65 +34,266 @@ import bhajansBulkParagraphs from "@/assets/projects/bhajans-bulk-paragraphs.png
 import bhajansLanguages from "@/assets/projects/bhajans-languages.png";
 import bhajansYoutube from "@/assets/projects/bhajans-youtubeIntegration.png";
 
+// =====================================================
+// PAGE TRANSLATIONS
+// =====================================================
+
+const translations = {
+  en: {
+    communityBadge: "Personal Community Project",
+    platformBadge: "Web + Android",
+    multilingualBadge: "Multilingual",
+
+    introduction1:
+      "A devotional lyrics platform I created as a personal contribution to my spiritual community, where group singing and devotional songs are an important part of community life.",
+    introduction2:
+      "The goal was simple: replace cumbersome song files with a searchable, structured collection that people can access whenever and wherever they need it.",
+
+    gallery: {
+      open: "Open image",
+      previous: "Previous image",
+      next: "Next image",
+    },
+
+    why: {
+      label: "Why I Built It",
+      heading: "A small contribution to make community life easier.",
+      description:
+        "Our community sings from a large collection of devotional songs. Maintaining and searching through large files can become difficult, especially when people need lyrics quickly during gatherings. Bhajans turns that collection into an accessible digital library.",
+    },
+
+    highlights: [
+      {
+        title: "Fast song discovery",
+        description:
+          "Members can search the collection, browse devotional categories and find songs without navigating large shared files.",
+      },
+      {
+        title: "Purpose-built reader",
+        description:
+          "Lyrics are structured into readable paragraphs with previous/next navigation, paragraph jumping and reader controls.",
+      },
+      {
+        title: "Multilingual support",
+        description:
+          "The platform supports Kannada, English and Hindi with configurable language management and transliteration tooling.",
+      },
+      {
+        title: "Tools for maintainers",
+        description:
+          "Administrative tools reduce the effort needed to add, structure, categorize and maintain a growing devotional song collection.",
+      },
+    ],
+
+    members: {
+      label: "Community Experience",
+      heading: "Find the right song quickly.",
+      features: [
+        "Search devotional songs by title",
+        "Browse songs by deity or category",
+        "Favorites for frequently used bhajans",
+        "Kannada and English/transliterated titles",
+        "Structured lyrics reader",
+        "Previous / next song navigation",
+        "Jump directly to a paragraph",
+        "Reader language and text controls",
+      ],
+    },
+
+    maintenance: {
+      label: "Maintainer Tools",
+      heading: "Making a large song collection easier to manage.",
+      features: [
+        "Create and edit bhajans",
+        "Category management with images",
+        "Configurable language management",
+        "Kannada, English and Hindi support",
+        "Bulk pasted lyrics can be converted into structured paragraphs",
+        "Kannada ↔ English transliteration tooling",
+        "Theme and reader personalization controls",
+        "Admin tooling separated from the reader experience",
+      ],
+    },
+
+    technology: "Technology",
+    techTags: [
+      "React",
+      "Next.js",
+      "React Native",
+      "Expo",
+      "Web + Android",
+      "Search",
+      "Multilingual Content",
+      "Transliteration",
+      "YouTube Media",
+    ],
+
+    liveApp: "Live web app",
+    androidRepo: "Android repository",
+  },
+
+  de: {
+    communityBadge: "Eigenes Gemeinschaftsprojekt",
+    platformBadge: "Web + Android",
+    multilingualBadge: "Mehrsprachig",
+
+    introduction1:
+      "Eine Plattform für spirituelle Liedtexte, die ich als persönlichen Beitrag für meine Gemeinschaft entwickelt habe. Gemeinsames Singen und spirituelle Lieder sind ein wichtiger Bestandteil des Gemeinschaftslebens.",
+    introduction2:
+      "Das Ziel war einfach: umfangreiche und unübersichtliche Lieddateien durch eine strukturierte, durchsuchbare Sammlung ersetzen, die jederzeit und von überall zugänglich ist.",
+
+    gallery: {
+      open: "Bild vergrössern",
+      previous: "Vorheriges Bild",
+      next: "Nächstes Bild",
+    },
+
+    why: {
+      label: "Warum ich dieses Projekt entwickelt habe",
+      heading: "Ein kleiner Beitrag für ein einfacheres Gemeinschaftsleben.",
+      description:
+        "Unsere Gemeinschaft nutzt eine umfangreiche Sammlung spiritueller Lieder. Die Verwaltung und Suche in grossen Dateien kann aufwendig sein, insbesondere wenn Liedtexte während gemeinsamer Veranstaltungen schnell benötigt werden. Bhajans macht diese Sammlung als digitale Bibliothek einfach zugänglich.",
+    },
+
+    highlights: [
+      {
+        title: "Schnelle Liedsuche",
+        description:
+          "Mitglieder können Lieder suchen, spirituelle Kategorien durchsuchen und die gewünschten Liedtexte finden, ohne grosse gemeinsame Dateien öffnen zu müssen.",
+      },
+      {
+        title: "Benutzerfreundliche Liedtextanzeige",
+        description:
+          "Liedtexte werden in übersichtlichen Absätzen dargestellt. Die Anwendung bietet Navigation zwischen Liedern, direkte Absatzwahl und verschiedene Anzeigeeinstellungen.",
+      },
+      {
+        title: "Mehrsprachige Unterstützung",
+        description:
+          "Die Plattform unterstützt Kannada, Englisch und Hindi sowie eine konfigurierbare Sprachverwaltung und Werkzeuge zur Transliteration.",
+      },
+      {
+        title: "Werkzeuge für die Verwaltung",
+        description:
+          "Administrationsfunktionen vereinfachen das Hinzufügen, Strukturieren, Kategorisieren und Pflegen einer wachsenden Liedersammlung.",
+      },
+    ],
+
+    members: {
+      label: "Funktionen für Mitglieder",
+      heading: "Das passende Lied schnell finden.",
+      features: [
+        "Spirituelle Lieder nach Titel suchen",
+        "Lieder nach Gottheit oder Kategorie durchsuchen",
+        "Favoriten für häufig verwendete Bhajans",
+        "Liedtitel auf Kannada und Englisch bzw. in Transliteration",
+        "Strukturierte und übersichtliche Liedtextanzeige",
+        "Navigation zum vorherigen oder nächsten Lied",
+        "Direkt zu einem bestimmten Absatz springen",
+        "Einstellungen für Sprache und Textdarstellung",
+      ],
+    },
+
+    maintenance: {
+      label: "Administrationswerkzeuge",
+      heading: "Eine umfangreiche Liedersammlung einfach verwalten.",
+      features: [
+        "Bhajans erstellen und bearbeiten",
+        "Kategorien mit Bildern verwalten",
+        "Konfigurierbare Sprachverwaltung",
+        "Unterstützung für Kannada, Englisch und Hindi",
+        "Mehrere eingefügte Liedtexte in strukturierte Absätze umwandeln",
+        "Werkzeuge zur Transliteration zwischen Kannada und Englisch",
+        "Design und Liedtextanzeige individuell anpassen",
+        "Administrationsfunktionen getrennt von der Liedtextansicht",
+      ],
+    },
+
+    technology: "Technologien",
+    techTags: [
+      "React",
+      "Next.js",
+      "React Native",
+      "Expo",
+      "Web + Android",
+      "Suche",
+      "Mehrsprachige Inhalte",
+      "Transliteration",
+      "YouTube-Integration",
+    ],
+
+    liveApp: "Webanwendung öffnen",
+    androidRepo: "Android-Repository",
+  },
+};
+
+// =====================================================
+// GALLERY DATA
+// =====================================================
+
 const gallery = [
   {
     src: bhajansHome,
-    title: "Bhajan library",
+    title: {
+      en: "Bhajan library",
+      de: "Bhajan-Bibliothek",
+    },
   },
   {
     src: bhajansReader,
-    title: "Lyrics reader",
+    title: {
+      en: "Lyrics reader",
+      de: "Liedtextanzeige",
+    },
   },
   {
     src: bhajansCategories,
-    title: "Category management",
+    title: {
+      en: "Category management",
+      de: "Kategorieverwaltung",
+    },
   },
   {
     src: bhajansTransliterate,
-    title: "Kannada ↔ English transliteration AI tool",
+    title: {
+      en: "Kannada ↔ English transliteration AI tool",
+      de: "KI-gestützte Transliteration zwischen Kannada und Englisch",
+    },
   },
   {
     src: bhajansBulkParagraphs,
-    title: "Bulk paragraph converter",
+    title: {
+      en: "Bulk paragraph converter",
+      de: "Umwandlung mehrerer Liedtexte in Absätze",
+    },
   },
   {
     src: bhajansLanguages,
-    title: "Language management",
+    title: {
+      en: "Language management",
+      de: "Sprachverwaltung",
+    },
   },
   {
     src: bhajansYoutube,
-    title: "YouTube integration",
-  }
-];
-
-const highlights = [
-  {
-    icon: Search,
-    title: "Fast song discovery",
-    description:
-      "Members can search the collection, browse devotional categories and find songs without navigating large shared files.",
-  },
-  {
-    icon: BookOpenText,
-    title: "Purpose-built reader",
-    description:
-      "Lyrics are structured into readable paragraphs with previous/next navigation, paragraph jumping and reader controls.",
-  },
-  {
-    icon: Languages,
-    title: "Multilingual support",
-    description:
-      "The platform supports Kannada, English and Hindi with configurable language management and transliteration tooling.",
-  },
-  {
-    icon: Wrench,
-    title: "Tools for maintainers",
-    description:
-      "Administrative tools reduce the effort needed to add, structure, categorize and maintain a growing devotional song collection.",
+    title: {
+      en: "YouTube integration",
+      de: "YouTube-Integration",
+    },
   },
 ];
 
-function BhajansGallery() {
+const highlightIcons = [
+  Search,
+  BookOpenText,
+  Languages,
+  Wrench,
+];
+
+// =====================================================
+// IMAGE GALLERY
+// =====================================================
+
+function BhajansGallery({ language, t }) {
   const [index, setIndex] = useState(0);
   const [open, setOpen] = useState(false);
 
@@ -104,40 +302,34 @@ function BhajansGallery() {
   const [isSwiping, setIsSwiping] = useState(false);
 
   const current = gallery[index];
+  const currentTitle = current.title[language];
 
   const MIN_SWIPE_DISTANCE = 50;
 
   function previous() {
     setIndex((value) =>
-      value === 0 ? gallery.length - 1 : value - 1,
+      value === 0 ? gallery.length - 1 : value - 1
     );
   }
 
   function next() {
     setIndex((value) =>
-      value === gallery.length - 1 ? 0 : value + 1,
+      value === gallery.length - 1 ? 0 : value + 1
     );
   }
 
   function handleTouchStart(event) {
     setTouchEndX(null);
     setIsSwiping(false);
-
-    setTouchStartX(
-      event.targetTouches[0].clientX,
-    );
+    setTouchStartX(event.targetTouches[0].clientX);
   }
 
   function handleTouchMove(event) {
-    const currentX =
-      event.targetTouches[0].clientX;
-
+    const currentX = event.targetTouches[0].clientX;
     setTouchEndX(currentX);
 
     if (touchStartX !== null) {
-      const distance = Math.abs(
-        touchStartX - currentX,
-      );
+      const distance = Math.abs(touchStartX - currentX);
 
       if (distance > 10) {
         setIsSwiping(true);
@@ -146,24 +338,17 @@ function BhajansGallery() {
   }
 
   function handleTouchEnd() {
-    if (
-      touchStartX === null ||
-      touchEndX === null
-    ) {
+    if (touchStartX === null || touchEndX === null) {
       setTouchStartX(null);
       setTouchEndX(null);
-
       return;
     }
 
-    const distance =
-      touchStartX - touchEndX;
+    const distance = touchStartX - touchEndX;
 
     if (distance > MIN_SWIPE_DISTANCE) {
       next();
-    } else if (
-      distance < -MIN_SWIPE_DISTANCE
-    ) {
+    } else if (distance < -MIN_SWIPE_DISTANCE) {
       previous();
     }
 
@@ -177,7 +362,6 @@ function BhajansGallery() {
 
   function handleImageClick() {
     if (isSwiping) return;
-
     setOpen(true);
   }
 
@@ -194,14 +378,14 @@ function BhajansGallery() {
         >
           <img
             src={current.src}
-            alt={current.title}
+            alt={currentTitle}
             draggable="false"
             className="h-full w-full select-none object-contain transition-transform duration-500 group-hover:scale-[1.01]"
           />
 
           <div className="absolute bottom-4 right-4 flex items-center gap-2 rounded-full border border-white/10 bg-black/75 px-3 py-1.5 text-xs text-white backdrop-blur">
             <Images className="size-3.5" />
-            Open image
+            {t.gallery.open}
           </div>
         </button>
 
@@ -209,7 +393,7 @@ function BhajansGallery() {
           <button
             type="button"
             onClick={previous}
-            aria-label="Previous image"
+            aria-label={t.gallery.previous}
             className="flex size-9 items-center justify-center rounded-lg text-zinc-400 hover:bg-white/5 hover:text-white"
           >
             <ChevronLeft className="size-4" />
@@ -217,7 +401,7 @@ function BhajansGallery() {
 
           <div className="text-center">
             <p className="text-sm font-medium text-zinc-300">
-              {current.title}
+              {currentTitle}
             </p>
 
             <p className="mt-1 text-xs text-zinc-600">
@@ -228,7 +412,7 @@ function BhajansGallery() {
           <button
             type="button"
             onClick={next}
-            aria-label="Next image"
+            aria-label={t.gallery.next}
             className="flex size-9 items-center justify-center rounded-lg text-zinc-400 hover:bg-white/5 hover:text-white"
           >
             <ChevronRight className="size-4" />
@@ -236,13 +420,10 @@ function BhajansGallery() {
         </div>
       </div>
 
-      <Dialog
-        open={open}
-        onOpenChange={setOpen}
-      >
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-h-[92vh] max-w-6xl border-white/10 bg-zinc-950 p-3">
           <DialogTitle className="sr-only">
-            {current.title}
+            {currentTitle}
           </DialogTitle>
 
           <div
@@ -253,7 +434,7 @@ function BhajansGallery() {
           >
             <img
               src={current.src}
-              alt={current.title}
+              alt={currentTitle}
               draggable="false"
               className="max-h-[84vh] max-w-full select-none object-contain"
             />
@@ -261,7 +442,7 @@ function BhajansGallery() {
             <button
               type="button"
               onClick={previous}
-              aria-label="Previous image"
+              aria-label={t.gallery.previous}
               className="absolute left-3 flex size-11 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white"
             >
               <ChevronLeft className="size-5" />
@@ -270,7 +451,7 @@ function BhajansGallery() {
             <button
               type="button"
               onClick={next}
-              aria-label="Next image"
+              aria-label={t.gallery.next}
               className="absolute right-3 flex size-11 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white"
             >
               <ChevronRight className="size-5" />
@@ -281,6 +462,10 @@ function BhajansGallery() {
     </>
   );
 }
+
+// =====================================================
+// EXTERNAL LINK
+// =====================================================
 
 function ExternalLink({ href, children }) {
   return (
@@ -296,7 +481,32 @@ function ExternalLink({ href, children }) {
   );
 }
 
+// =====================================================
+// FEATURE LIST
+// =====================================================
+
+function FeatureList({ items }) {
+  return (
+    <ul className="space-y-3 text-sm leading-7 text-zinc-400">
+      {items.map((item) => (
+        <li key={item} className="flex gap-2">
+          <span className="text-purple-400">•</span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+// =====================================================
+// BHAJANS PROJECT PAGE
+// =====================================================
+
 export default function BhajansProjectPage() {
+  const { language } = useLanguage();
+  const lang = language === "de" ? "de" : "en";
+  const t = translations[lang];
+
   return (
     <main className="min-h-screen bg-black text-white">
       <section className="mx-auto max-w-7xl px-6 pb-28 pt-32 sm:px-8 lg:px-10">
@@ -308,21 +518,21 @@ export default function BhajansProjectPage() {
                 variant="outline"
                 className="border-purple-400/30 bg-purple-400/10 text-purple-300"
               >
-                Personal Community Project
+                {t.communityBadge}
               </Badge>
 
               <Badge
                 variant="outline"
                 className="border-white/10 bg-white/[0.03] text-zinc-300"
               >
-                Web + Android
+                {t.platformBadge}
               </Badge>
 
               <Badge
                 variant="outline"
                 className="border-white/10 bg-white/[0.03] text-zinc-300"
               >
-                Multilingual
+                {t.multilingualBadge}
               </Badge>
             </div>
 
@@ -331,15 +541,11 @@ export default function BhajansProjectPage() {
             </h1>
 
             <p className="mx-auto mt-7 max-w-3xl text-base leading-8 text-zinc-400 sm:text-lg">
-              A devotional lyrics platform I created as a personal
-              contribution to my spiritual community, where group singing
-              and devotional songs are an important part of community life.
+              {t.introduction1}
             </p>
 
             <p className="mx-auto mt-4 max-w-3xl text-base leading-8 text-zinc-400 sm:text-lg">
-              The goal was simple: replace cumbersome song files with a
-              searchable, structured collection that people can access
-              whenever and wherever they need it.
+              {t.introduction2}
             </p>
           </div>
         </RevealOnScroll>
@@ -347,7 +553,7 @@ export default function BhajansProjectPage() {
         {/* GALLERY */}
         <RevealOnScroll>
           <div className="mx-auto mt-14 max-w-5xl">
-            <BhajansGallery />
+            <BhajansGallery language={lang} t={t} />
           </div>
         </RevealOnScroll>
 
@@ -361,19 +567,15 @@ export default function BhajansProjectPage() {
 
               <div>
                 <p className="text-xs font-medium uppercase tracking-[0.25em] text-purple-300">
-                  Why I Built It
+                  {t.why.label}
                 </p>
 
                 <h2 className="mt-2 text-2xl font-semibold text-white">
-                  A small contribution to make community life easier.
+                  {t.why.heading}
                 </h2>
 
                 <p className="mt-4 max-w-4xl text-sm leading-7 text-zinc-400">
-                  Our community sings from a large collection of devotional
-                  songs. Maintaining and searching through large files can
-                  become difficult, especially when people need lyrics
-                  quickly during gatherings. Bhajans turns that collection
-                  into an accessible digital library.
+                  {t.why.description}
                 </p>
               </div>
             </div>
@@ -382,11 +584,11 @@ export default function BhajansProjectPage() {
 
         {/* HIGHLIGHTS */}
         <div className="mt-16 grid gap-5 md:grid-cols-2">
-          {highlights.map((item) => {
-            const Icon = item.icon;
+          {t.highlights.map((item, index) => {
+            const Icon = highlightIcons[index];
 
             return (
-              <RevealOnScroll key={item.title}>
+              <RevealOnScroll key={index}>
                 <Card className="h-full border-white/10 bg-zinc-950/60 shadow-none">
                   <CardContent className="p-6">
                     <div className="mb-5 flex size-10 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03]">
@@ -417,29 +619,22 @@ export default function BhajansProjectPage() {
 
               <div>
                 <p className="text-xs font-medium uppercase tracking-[0.25em] text-purple-400">
-                  Community Experience
+                  {t.members.label}
                 </p>
 
                 <h2 className="mt-1 text-2xl font-semibold text-white">
-                  Find the right song quickly.
+                  {t.members.heading}
                 </h2>
               </div>
             </div>
 
             <div className="grid gap-8 lg:grid-cols-2">
-              <ul className="space-y-3 text-sm leading-7 text-zinc-400">
-                <li>• Search devotional songs by title</li>
-                <li>• Browse songs by deity or category</li>
-                <li>• Favorites for frequently used bhajans</li>
-                <li>• Kannada and English/transliterated titles</li>
-              </ul>
-
-              <ul className="space-y-3 text-sm leading-7 text-zinc-400">
-                <li>• Structured lyrics reader</li>
-                <li>• Previous / next song navigation</li>
-                <li>• Jump directly to a paragraph</li>
-                <li>• Reader language and text controls</li>
-              </ul>
+              <FeatureList
+                items={t.members.features.slice(0, 4)}
+              />
+              <FeatureList
+                items={t.members.features.slice(4)}
+              />
             </div>
           </div>
         </RevealOnScroll>
@@ -454,38 +649,22 @@ export default function BhajansProjectPage() {
 
               <div>
                 <p className="text-xs font-medium uppercase tracking-[0.25em] text-purple-400">
-                  Maintainer Tools
+                  {t.maintenance.label}
                 </p>
 
                 <h2 className="mt-1 text-2xl font-semibold text-white">
-                  Making a large song collection easier to manage.
+                  {t.maintenance.heading}
                 </h2>
               </div>
             </div>
 
             <div className="grid gap-8 lg:grid-cols-2">
-              <ul className="space-y-3 text-sm leading-7 text-zinc-400">
-                <li>• Create and edit bhajans</li>
-                <li>• Category management with images</li>
-                <li>• Configurable language management</li>
-                <li>• Kannada, English and Hindi support</li>
-              </ul>
-
-              <ul className="space-y-3 text-sm leading-7 text-zinc-400">
-                <li>
-                  • Bulk pasted lyrics can be converted into structured
-                  paragraphs
-                </li>
-                <li>
-                  • Kannada ↔ English transliteration tooling
-                </li>
-                <li>
-                  • Theme and reader personalization controls
-                </li>
-                <li>
-                  • Admin tooling separated from the reader experience
-                </li>
-              </ul>
+              <FeatureList
+                items={t.maintenance.features.slice(0, 4)}
+              />
+              <FeatureList
+                items={t.maintenance.features.slice(4)}
+              />
             </div>
           </div>
         </RevealOnScroll>
@@ -496,21 +675,11 @@ export default function BhajansProjectPage() {
         <RevealOnScroll>
           <div>
             <p className="text-sm font-medium uppercase tracking-[0.3em] text-purple-400">
-              Technology
+              {t.technology}
             </p>
 
             <div className="mt-6 flex flex-wrap gap-2">
-              {[
-                "React",
-                "Next.js",
-                "React Native",
-                "Expo",
-                "Web + Android",
-                "Search",
-                "Multilingual Content",
-                "Transliteration",
-                "YouTube Media",
-              ].map((technology) => (
+              {t.techTags.map((technology) => (
                 <Badge
                   key={technology}
                   variant="outline"
@@ -523,11 +692,11 @@ export default function BhajansProjectPage() {
 
             <div className="mt-8 flex flex-wrap gap-2">
               <ExternalLink href="https://bhajans-app-chi.vercel.app">
-                Live web app
+                {t.liveApp}
               </ExternalLink>
 
               <ExternalLink href="https://github.com/A-nu-1/bhajans-mobile">
-                Android repository
+                {t.androidRepo}
               </ExternalLink>
             </div>
           </div>

@@ -4,10 +4,16 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { RevealOnScroll } from "../RevealOnScroll";
+import { useLanguage } from "@/i18n/useLanguage";
 
 import Anu from "../../assets/Anu.jpeg";
 
 export const Home = () => {
+  const { language, t } = useLanguage();
+
+  const localizedPath = (path) =>
+    language === "de" ? `${path}?lang=de` : path;
+
   return (
     <section
       id="home"
@@ -27,7 +33,6 @@ export const Home = () => {
       <div className="relative mx-auto w-full max-w-7xl px-6 py-16 sm:px-8 lg:px-10">
         <RevealOnScroll>
           <div className="grid items-center gap-14 lg:grid-cols-[1.08fr_0.92fr] lg:gap-20">
-
             {/* ==================================================
                 TEXT
             ================================================== */}
@@ -38,7 +43,7 @@ export const Home = () => {
                   className="border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium uppercase tracking-[0.18em] text-zinc-400"
                 >
                   <Code2 className="mr-2 size-3.5 text-purple-400" />
-                  Software Engineer
+                  {t.home.role}
                 </Badge>
               </div>
 
@@ -47,30 +52,28 @@ export const Home = () => {
               </p>
 
               <h1 className="text-5xl font-semibold tracking-[-0.04em] text-white sm:text-6xl lg:text-7xl">
-                Hi, I&apos;m{" "}
+                {t.home.greeting}{" "}
                 <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
                   Anupama.
                 </span>
               </h1>
 
               <h2 className="mt-6 max-w-2xl text-2xl font-medium leading-snug text-zinc-200 sm:text-3xl">
-                I build software that solves real-world problems.
+                {t.home.headline}
               </h2>
 
               <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-zinc-400 lg:mx-0 lg:text-lg">
-                Software engineer with a background in Java and enterprise
-                systems, now building modern web and mobile products from
-                idea to deployment.
+                {t.home.description}
               </p>
 
               <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row lg:justify-start">
                 <Button
                   size="lg"
                   nativeButton={false}
-                  render={<Link to="/projects" />}
+                  render={<Link to={localizedPath("/projects")} />}
                   className="min-w-40 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white shadow-lg shadow-purple-950/20 transition-transform hover:-translate-y-0.5"
                 >
-                  View Projects
+                  {t.home.projects}
                   <ArrowRight className="ml-2 size-4" />
                 </Button>
 
@@ -78,34 +81,28 @@ export const Home = () => {
                   size="lg"
                   nativeButton={false}
                   variant="outline"
-                  render={<Link to="/experience" />}
+                  render={<Link to={localizedPath("/experience")} />}
                   className="min-w-40 border-white/15 bg-white/[0.02] text-zinc-200 hover:bg-white/[0.07] hover:text-white"
                 >
-                  My Experience
+                  {t.home.experience}
                 </Button>
               </div>
 
               {/* Small engineering summary */}
-              <div className="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm text-zinc-500 lg:justify-start">
-                <span>Java & Enterprise Systems</span>
-
-                <span
-                  aria-hidden="true"
-                  className="hidden text-zinc-700 sm:inline"
-                >
-                  /
-                </span>
-
-                <span>Web & Mobile</span>
-
-                <span
-                  aria-hidden="true"
-                  className="hidden text-zinc-700 sm:inline"
-                >
-                  /
-                </span>
-
-                <span>Automation & Integration</span>
+              <div className="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm text-zinc-500 lg:justify-start">
+                {t.home.specialties.map((item, index) => (
+                  <span key={item} className="contents">
+                    {index > 0 && (
+                      <span
+                        aria-hidden="true"
+                        className="hidden text-zinc-700 sm:inline"
+                      >
+                        /
+                      </span>
+                    )}
+                    <span>{item}</span>
+                  </span>
+                ))}
               </div>
             </div>
 
@@ -114,7 +111,6 @@ export const Home = () => {
             ================================================== */}
             <div className="order-1 flex justify-center lg:order-2 lg:justify-end">
               <div className="relative">
-
                 {/* Background halo */}
                 <div
                   aria-hidden="true"

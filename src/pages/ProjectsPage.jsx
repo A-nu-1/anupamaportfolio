@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -11,10 +12,24 @@ import {
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 import { RevealOnScroll } from "@/components/RevealOnScroll";
+import { useLanguage } from "@/i18n/useLanguage";
+
+// =====================================================
+// PROJECT IMAGES
+// =====================================================
 
 import luckysStorefront from "@/assets/projects/luckys-storefront.png";
 import luckysCommerce from "@/assets/projects/luckys-commerce.png";
@@ -34,7 +49,6 @@ import bhajansLanguages from "@/assets/projects/bhajans-languages.png";
 import bhajansTransliterate from "@/assets/projects/bhajans-transliterate.png";
 import bhajansYoutube from "@/assets/projects/bhajans-youtubeIntegration.png";
 import bhajansCreate from "@/assets/projects/bhajans-bulk-paragraphs.png";
-
 
 import ecomHome from "@/assets/projects/ecom-home.png";
 import ecomCart from "@/assets/projects/ecom-cart.png";
@@ -58,222 +72,375 @@ import supportdeskAgent from "@/assets/projects/supportdesk-agent-tickets.png";
 import supportdeskTicket from "@/assets/projects/supportdesk-ticket-detail.png";
 import supportdeskAdmin from "@/assets/projects/supportdesk-admin.png";
 
+// =====================================================
+// PAGE TRANSLATIONS
+// =====================================================
+
+const translations = {
+  en: {
+    label: "Selected Work",
+    heading: "Projects with",
+    highlight: "a reason to exist.",
+    description:
+      "Client products, community software and technical projects — each built around a different problem, constraint or learning goal.",
+
+    featured: "Featured Case Study",
+    community: "Personal Community Project",
+    webAndroid: "Web + Android",
+    realClients: "Real Clients",
+    caseStudy: "View case study",
+    liveProject: "Live project",
+    viewLarger: "View larger",
+    previousImage: "Previous image",
+    nextImage: "Next image",
+    showImage: "Show image",
+    screenshot: "Project screenshot",
+    openRepository: "Open repository",
+
+    commerce: {
+      title: "Client Commerce Platforms",
+      description:
+        "Two complete commerce ecosystems designed and developed end-to-end for small businesses, combining web, Android, administration, AI-assisted workflows, notifications, ordering and cost-conscious infrastructure.",
+      cost: "0 CHF Goal",
+    },
+
+    bhajans: {
+      description:
+        "A devotional lyrics platform created for my spiritual community, making a large shared collection of songs searchable and accessible anywhere instead of relying on cumbersome song files.",
+      search: "Search",
+      multilingual: "Multilingual",
+    },
+
+    more: "More Projects",
+    moreHeading: "Smaller projects, experiments and",
+    moreHighlight: "continued learning.",
+  },
+
+  de: {
+    label: "Ausgewählte Projekte",
+    heading: "Projekte mit",
+    highlight: "einem klaren Ziel.",
+    description:
+      "Kundenprojekte, Anwendungen für die Gemeinschaft und technische Experimente – jedes Projekt entstand aus einer konkreten Anforderung, Herausforderung oder Lernidee.",
+
+    featured: "Ausgewähltes Praxisprojekt",
+    community: "Eigenes Gemeinschaftsprojekt",
+    webAndroid: "Web + Android",
+    realClients: "Echte Kundenprojekte",
+    caseStudy: "Projekt im Detail ansehen",
+    liveProject: "Live-Anwendung",
+    viewLarger: "Vergrössern",
+    previousImage: "Vorheriges Bild",
+    nextImage: "Nächstes Bild",
+    showImage: "Bild anzeigen",
+    screenshot: "Projekt-Screenshot",
+    openRepository: "Repository öffnen",
+
+    commerce: {
+      title: "E-Commerce-Plattformen für Kunden",
+      description:
+        "Zwei vollständige E-Commerce-Lösungen, die ich für kleine Unternehmen von der Konzeption bis zur Bereitstellung entwickelt habe. Sie verbinden Web- und Android-Anwendungen, Administration, KI-gestützte Abläufe, Benachrichtigungen, Bestellverwaltung und eine kostenbewusste Infrastruktur.",
+      cost: "Ziel: 0 CHF Betriebskosten",
+    },
+
+    bhajans: {
+      description:
+        "Eine Plattform für spirituelle Liedtexte, die ich für meine Gemeinschaft entwickelt habe. Eine umfangreiche Liedersammlung ist damit einfach durchsuchbar und von überall zugänglich, ohne auf unübersichtliche Lieddateien angewiesen zu sein.",
+      search: "Suche",
+      multilingual: "Mehrsprachig",
+    },
+
+    more: "Weitere Projekte",
+    moreHeading: "Kleinere Projekte, Experimente und",
+    moreHighlight: "kontinuierliches Lernen.",
+  },
+};
+
+// =====================================================
+// GALLERY IMAGE DATA
+// =====================================================
+
+function galleryImage(src, en, de) {
+  return {
+    src,
+    alt: { en, de },
+  };
+}
+
 const bhajansImages = [
-  {
-    src: bhajansHome,
-    alt: "Bhajans searchable devotional song library",
-  },
-  {
-    src: bhajansReader,
-    alt: "Bhajans structured lyrics reader",
-  },
-  {
-    src: bhajansLanguages,
-    alt: "Bhajans language management",
-  },
-  {
-    src: bhajansTransliterate,
-    alt: "Bhajans transliteration through AI",
-  },
-  {
-    src: bhajansYoutube,
-    alt: "Bhajans YouTube integration",
-  },
-  {
-    src: bhajansCreate,
-    alt: "Bhajans bulk song creation helper",
-  },
+  galleryImage(
+    bhajansHome,
+    "Bhajans searchable devotional song library",
+    "Bhajans – durchsuchbare Sammlung spiritueller Lieder",
+  ),
+  galleryImage(
+    bhajansReader,
+    "Bhajans structured lyrics reader",
+    "Bhajans – strukturierte Liedtextanzeige",
+  ),
+  galleryImage(
+    bhajansLanguages,
+    "Bhajans language management",
+    "Bhajans – Sprachverwaltung",
+  ),
+  galleryImage(
+    bhajansTransliterate,
+    "Bhajans transliteration through AI",
+    "Bhajans – KI-gestützte Transliteration",
+  ),
+  galleryImage(
+    bhajansYoutube,
+    "Bhajans YouTube integration",
+    "Bhajans – YouTube-Integration",
+  ),
+  galleryImage(
+    bhajansCreate,
+    "Bhajans bulk song creation helper",
+    "Bhajans – Unterstützung bei der Erfassung mehrerer Lieder",
+  ),
 ];
 
 const travelImages = [
-  {
-    src: travelHome,
-    alt: "Travel Planner homepage",
-  },
-  {
-    src: travelDashboard,
-    alt: "Travel Planner dashboard",
-  },
-  {
-    src: travelTrip,
-    alt: "Travel Planner trip detail",
-  },
-  {
-    src: travelGlobe,
-    alt: "Travel Planner interactive globe",
-  },
+  galleryImage(
+    travelHome,
+    "Travel Planner homepage",
+    "Travel Planner – Startseite",
+  ),
+  galleryImage(
+    travelDashboard,
+    "Travel Planner dashboard",
+    "Travel Planner – Dashboard",
+  ),
+  galleryImage(
+    travelTrip,
+    "Travel Planner trip detail",
+    "Travel Planner – Reisedetails",
+  ),
+  galleryImage(
+    travelGlobe,
+    "Travel Planner interactive globe",
+    "Travel Planner – interaktiver Globus",
+  ),
 ];
 
 const ecommerceImages = [
-  {
-    src: ecomHome,
-    alt: "Ecommerce product listing",
-  },
-  {
-    src: ecomCart,
-    alt: "Ecommerce checkout",
-  },
-  {
-    src: ecomOrders,
-    alt: "Ecommerce orders",
-  },
-  {
-    src: ecomTracking,
-    alt: "Ecommerce delivery tracking",
-  },
+  galleryImage(
+    ecomHome,
+    "Ecommerce product listing",
+    "E-Commerce – Produktübersicht",
+  ),
+  galleryImage(
+    ecomCart,
+    "Ecommerce checkout",
+    "E-Commerce – Bestellabschluss",
+  ),
+  galleryImage(
+    ecomOrders,
+    "Ecommerce orders",
+    "E-Commerce – Bestellungen",
+  ),
+  galleryImage(
+    ecomTracking,
+    "Ecommerce delivery tracking",
+    "E-Commerce – Lieferverfolgung",
+  ),
 ];
+
 const commerceImages = [
-  {
-    src: luckysStorefront,
-    alt: "Client commerce storefront",
-  },
-  {
-    src: luckysCommerce,
-    alt: "Commerce and order workflow",
-  },
-  {
-    src: luckysAi,
-    alt: "AI-assisted product management",
-  },
-  {
-    src: luckysAdmin,
-    alt: "Administration and analytics",
-  },
-  {
-    src: luckysMobile,
-    alt: "Android commerce application",
-  },
-  {
-    src: akOrder,
-    alt: "Order management and tracking", 
-  },
-  {
-    src: akCache,
-    alt: "Caching and performance",
-  },
-  {
-    src: akCalendar,
-    alt: "Calendar integration",
-  },
-  {
-    src: akFirebase,
-    alt: "Firebase messaging",
-  },
-  {
-    src: akCloudinary,
-    alt: "Cloudinary protection",
-  }
+  galleryImage(
+    luckysStorefront,
+    "Client commerce storefront",
+    "Kundenprojekt – Online-Shop",
+  ),
+  galleryImage(
+    luckysCommerce,
+    "Commerce and order workflow",
+    "E-Commerce – Bestellablauf",
+  ),
+  galleryImage(
+    luckysAi,
+    "AI-assisted product management",
+    "KI-gestützte Produktverwaltung",
+  ),
+  galleryImage(
+    luckysAdmin,
+    "Administration and analytics",
+    "Administration und Auswertungen",
+  ),
+  galleryImage(
+    luckysMobile,
+    "Android commerce application",
+    "Android-E-Commerce-Anwendung",
+  ),
+  galleryImage(
+    akOrder,
+    "Order management and tracking",
+    "Bestellverwaltung und Nachverfolgung",
+  ),
+  galleryImage(
+    akCache,
+    "Caching and performance",
+    "Caching und Performance",
+  ),
+  galleryImage(
+    akCalendar,
+    "Calendar integration",
+    "Kalenderintegration",
+  ),
+  galleryImage(
+    akFirebase,
+    "Firebase messaging",
+    "Firebase-Benachrichtigungen",
+  ),
+  galleryImage(
+    akCloudinary,
+    "Cloudinary protection",
+    "Cloudinary-Schutzmechanismus",
+  ),
 ];
 
 const supportdeskImages = [
-  {
-    src: supportdeskHome,
-    alt: "SupportDesk homepage",
-  },
-  {
-    src: supportdeskLogin,
-    alt: "SupportDesk login and demo access",
-  },
-  {
-    src: supportdeskEmployee,
-    alt: "SupportDesk employee ticket dashboard",
-  },
-  {
-    src: supportdeskAgent,
-    alt: "SupportDesk support agent ticket dashboard",
-  },
-  {
-    src: supportdeskTicket,
-    alt: "SupportDesk ticket details and comments",
-  },
-  {
-    src: supportdeskAdmin,
-    alt: "SupportDesk administration dashboard",
-  },
+  galleryImage(
+    supportdeskHome,
+    "SupportDesk homepage",
+    "SupportDesk – Startseite",
+  ),
+  galleryImage(
+    supportdeskLogin,
+    "SupportDesk login and demo access",
+    "SupportDesk – Anmeldung und Demo-Zugang",
+  ),
+  galleryImage(
+    supportdeskEmployee,
+    "SupportDesk employee ticket dashboard",
+    "SupportDesk – Ticketübersicht für Mitarbeitende",
+  ),
+  galleryImage(
+    supportdeskAgent,
+    "SupportDesk support agent ticket dashboard",
+    "SupportDesk – Ticketübersicht für Support-Mitarbeitende",
+  ),
+  galleryImage(
+    supportdeskTicket,
+    "SupportDesk ticket details and comments",
+    "SupportDesk – Ticketdetails und Kommentare",
+  ),
+  galleryImage(
+    supportdeskAdmin,
+    "SupportDesk administration dashboard",
+    "SupportDesk – Administrations-Dashboard",
+  ),
 ];
+
+// =====================================================
+// SMALLER PROJECTS
+// =====================================================
 
 const smallerProjects = [
   {
-  title: "SupportDesk",
-  description:
-    "A full-stack IT support ticket system with role-based workflows for employees, support agents and administrators, built to explore enterprise-style application architecture.",
-  tags: [
-    "Java",
-    "Spring Boot",
-    "Angular",
-    "PostgreSQL",
-    "Spring Security",
-    "JWT",
-    "Docker",
-  ],
-  href: "https://github.com/A-nu-1/supportdesk-backend",
-  live: "https://supportdesk-frontend-fawn.vercel.app/",
-  images: supportdeskImages,
-},
+    id: "supportdesk",
+    title: "SupportDesk",
+    description: {
+      en: "A full-stack IT support ticket system with role-based workflows for employees, support agents and administrators, built to explore enterprise-style application architecture.",
+      de: "Ein Full-Stack-Ticketsystem für den IT-Support mit rollenbasierten Abläufen für Mitarbeitende, Support-Teams und Administratoren. Das Projekt demonstriert die Architektur und Umsetzung einer Unternehmensanwendung.",
+    },
+    tags: [
+      "Java",
+      "Spring Boot",
+      "Angular",
+      "PostgreSQL",
+      "Spring Security",
+      "JWT",
+      "Docker",
+    ],
+    href: "https://github.com/A-nu-1/supportdesk-backend",
+    live: "https://supportdesk-frontend-fawn.vercel.app/",
+    images: supportdeskImages,
+  },
   {
+    id: "travel",
     title: "Travel Planner",
-    description:
-      "A travel-planning application for creating trips, organizing destinations, building itineraries and visualizing travel history.",
+    description: {
+      en: "A travel-planning application for creating trips, organizing destinations, building itineraries and visualizing travel history.",
+      de: "Eine Anwendung zur Reiseplanung, mit der Reisen erstellt, Reiseziele organisiert, Routen geplant und vergangene Reisen visualisiert werden können.",
+    },
     tags: ["Next.js", "React", "Maps", "APIs"],
     href: "https://github.com/A-nu-1/TravelPlanner",
     live: "https://travel-planner-six-eta.vercel.app",
     images: travelImages,
   },
   {
+    id: "ecommerce",
     title: "Ecommerce Application",
-    description:
-      "A full-stack ecommerce application with product browsing, cart, checkout, order history and delivery tracking.",
+    description: {
+      en: "A full-stack ecommerce application with product browsing, cart, checkout, order history and delivery tracking.",
+      de: "Eine Full-Stack-E-Commerce-Anwendung mit Produktübersicht, Warenkorb, Bestellabschluss, Bestellhistorie und Lieferverfolgung.",
+    },
     tags: ["React", "Express", "Sequelize", "SQL"],
     href: "https://github.com/A-nu-1/Ecommerce-Application",
     live: "https://ecommerce-application-btah.onrender.com",
     images: ecommerceImages,
   },
   {
+    id: "solar",
     title: "Solar System",
-    description:
-      "An interactive solar-system visualization exploring orbital movement, animated celestial bodies and visual effects.",
+    description: {
+      en: "An interactive solar-system visualization exploring orbital movement, animated celestial bodies and visual effects.",
+      de: "Eine interaktive Visualisierung des Sonnensystems mit Umlaufbahnen, animierten Himmelskörpern und visuellen Effekten.",
+    },
     tags: ["JavaScript", "Animation", "Canvas"],
     href: "https://github.com/A-nu-1/SolarSystem",
     live: "https://a-nu-1.github.io/SolarSystem/",
     images: [
-      {
-        src: solarSystem,
-        alt: "Interactive Solar System visualization",
-      },
+      galleryImage(
+        solarSystem,
+        "Interactive Solar System visualization",
+        "Interaktive Visualisierung des Sonnensystems",
+      ),
     ],
   },
   {
+    id: "cutebot",
     title: "React CuteBot",
-    description:
-      "A playful React chatbot experiment with conversational responses and simple interactive commands.",
+    description: {
+      en: "A playful React chatbot experiment with conversational responses and simple interactive commands.",
+      de: "Ein experimenteller React-Chatbot mit dialogbasierten Antworten und einfachen interaktiven Befehlen.",
+    },
     tags: ["React", "JavaScript"],
     href: "https://github.com/A-nu-1/reactCutebot",
     live: "https://a-nu-1.github.io/reactCutebot/",
     images: [
-      {
-        src: reactCutebot,
-        alt: "React CuteBot chatbot",
-      },
+      galleryImage(
+        reactCutebot,
+        "React CuteBot chatbot",
+        "React CuteBot – Chatbot",
+      ),
     ],
   },
   {
+    id: "stories",
     title: "Store Stories",
-    description:
-      "A mobile story-sharing experience with image posts designed to expire after 24 hours.",
+    description: {
+      en: "A mobile story-sharing experience with image posts designed to expire after 24 hours.",
+      de: "Eine mobile Anwendung zum Teilen von Bildern und kurzen Beiträgen, die nach 24 Stunden automatisch ablaufen.",
+    },
     tags: ["React Native", "Expo", "Mobile"],
     href: "https://github.com/A-nu-1/storeStories",
     images: [
-      {
-        src: storeStories,
-        alt: "Store Stories mobile application",
-      },
+      galleryImage(
+        storeStories,
+        "Store Stories mobile application",
+        "Store Stories – mobile Anwendung",
+      ),
     ],
   },
 ];
 
+// =====================================================
+// PROJECT GALLERY
+// =====================================================
 
-
-function ProjectGallery({ images }) {
+function ProjectGallery({ images, language, t }) {
   const [index, setIndex] = useState(0);
   const [open, setOpen] = useState(false);
 
@@ -282,7 +449,6 @@ function ProjectGallery({ images }) {
   const [isSwiping, setIsSwiping] = useState(false);
 
   const current = images[index];
-
   const MIN_SWIPE_DISTANCE = 50;
 
   function previous() {
@@ -300,22 +466,15 @@ function ProjectGallery({ images }) {
   function handleTouchStart(event) {
     setTouchEndX(null);
     setIsSwiping(false);
-
-    setTouchStartX(
-      event.targetTouches[0].clientX,
-    );
+    setTouchStartX(event.targetTouches[0].clientX);
   }
 
   function handleTouchMove(event) {
-    const currentX =
-      event.targetTouches[0].clientX;
-
+    const currentX = event.targetTouches[0].clientX;
     setTouchEndX(currentX);
 
     if (touchStartX !== null) {
-      const distance = Math.abs(
-        touchStartX - currentX,
-      );
+      const distance = Math.abs(touchStartX - currentX);
 
       if (distance > 10) {
         setIsSwiping(true);
@@ -324,32 +483,24 @@ function ProjectGallery({ images }) {
   }
 
   function handleTouchEnd() {
-    if (
-      touchStartX === null ||
-      touchEndX === null
-    ) {
+    if (touchStartX === null || touchEndX === null) {
       setTouchStartX(null);
       setTouchEndX(null);
-
       return;
     }
 
-    const distance =
-      touchStartX - touchEndX;
+    const distance = touchStartX - touchEndX;
 
     if (distance > MIN_SWIPE_DISTANCE) {
       next();
-    } else if (
-      distance < -MIN_SWIPE_DISTANCE
-    ) {
+    } else if (distance < -MIN_SWIPE_DISTANCE) {
       previous();
     }
 
     setTouchStartX(null);
     setTouchEndX(null);
 
-    // Small delay so the click event after touch
-    // does not open the dialog accidentally.
+    // Prevent a swipe from opening the dialog.
     setTimeout(() => {
       setIsSwiping(false);
     }, 100);
@@ -357,7 +508,6 @@ function ProjectGallery({ images }) {
 
   function handleImageClick() {
     if (isSwiping) return;
-
     setOpen(true);
   }
 
@@ -374,7 +524,7 @@ function ProjectGallery({ images }) {
         >
           <img
             src={current.src}
-            alt={current.alt}
+            alt={current.alt[language]}
             draggable="false"
             className="h-full w-full select-none object-cover transition-transform duration-500 group-hover:scale-[1.02]"
           />
@@ -383,7 +533,7 @@ function ProjectGallery({ images }) {
 
           <div className="absolute bottom-3 right-3 flex items-center gap-2 rounded-full border border-white/10 bg-black/70 px-3 py-1.5 text-xs text-white backdrop-blur">
             <Images className="size-3.5" />
-            View larger
+            {t.viewLarger}
           </div>
         </button>
 
@@ -391,7 +541,7 @@ function ProjectGallery({ images }) {
           <button
             type="button"
             onClick={previous}
-            aria-label="Previous image"
+            aria-label={t.previousImage}
             className="flex size-8 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-white/5 hover:text-white"
           >
             <ChevronLeft className="size-4" />
@@ -400,14 +550,10 @@ function ProjectGallery({ images }) {
           <div className="flex gap-1.5">
             {images.map((image, imageIndex) => (
               <button
-                key={`${image.alt}-${imageIndex}`}
+                key={`${image.alt.en}-${imageIndex}`}
                 type="button"
-                onClick={() =>
-                  setIndex(imageIndex)
-                }
-                aria-label={`Show image ${
-                  imageIndex + 1
-                }`}
+                onClick={() => setIndex(imageIndex)}
+                aria-label={`${t.showImage} ${imageIndex + 1}`}
                 className={`h-1.5 rounded-full transition-all ${
                   imageIndex === index
                     ? "w-5 bg-purple-400"
@@ -420,7 +566,7 @@ function ProjectGallery({ images }) {
           <button
             type="button"
             onClick={next}
-            aria-label="Next image"
+            aria-label={t.nextImage}
             className="flex size-8 items-center justify-center rounded-lg text-zinc-400 transition-colors hover:bg-white/5 hover:text-white"
           >
             <ChevronRight className="size-4" />
@@ -428,13 +574,10 @@ function ProjectGallery({ images }) {
         </div>
       </div>
 
-      <Dialog
-        open={open}
-        onOpenChange={setOpen}
-      >
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-h-[92vh] max-w-6xl border-white/10 bg-zinc-950 p-3 text-white">
           <DialogTitle className="sr-only">
-            Project screenshot
+            {t.screenshot}
           </DialogTitle>
 
           <div
@@ -445,7 +588,7 @@ function ProjectGallery({ images }) {
           >
             <img
               src={current.src}
-              alt={current.alt}
+              alt={current.alt[language]}
               draggable="false"
               className="max-h-[84vh] max-w-full select-none object-contain"
             />
@@ -453,7 +596,7 @@ function ProjectGallery({ images }) {
             <button
               type="button"
               onClick={previous}
-              aria-label="Previous image"
+              aria-label={t.previousImage}
               className="absolute left-3 flex size-10 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white backdrop-blur"
             >
               <ChevronLeft className="size-5" />
@@ -462,7 +605,7 @@ function ProjectGallery({ images }) {
             <button
               type="button"
               onClick={next}
-              aria-label="Next image"
+              aria-label={t.nextImage}
               className="absolute right-3 flex size-10 items-center justify-center rounded-full border border-white/10 bg-black/70 text-white backdrop-blur"
             >
               <ChevronRight className="size-5" />
@@ -474,47 +617,46 @@ function ProjectGallery({ images }) {
   );
 }
 
-// function ExternalProjectLink({ href }) {
-//   return (
-//     <a
-//       href={href}
-//       target="_blank"
-//       rel="noreferrer"
-//       aria-label="Open project on GitHub"
-//       className="flex size-9 items-center justify-center rounded-lg border border-white/10 text-zinc-500 transition-colors hover:bg-white/5 hover:text-white"
-//     >
-//       <ArrowUpRight className="size-4" />
-//     </a>
-//   );
-// }
+// =====================================================
+// PROJECTS PAGE
+// =====================================================
 
 export default function ProjectsPage() {
+  const { language } = useLanguage();
+
+  const lang = language === "de" ? "de" : "en";
+  const t = translations[lang];
+
+  const localizedPath = (path) =>
+    lang === "de" ? `${path}?lang=de` : path;
+
   return (
     <main className="min-h-screen bg-black text-white">
       <section className="mx-auto max-w-7xl px-6 pb-28 pt-32 sm:px-8 lg:px-10">
+        {/* INTRODUCTION */}
         <RevealOnScroll>
           <div className="mx-auto mb-16 max-w-4xl text-center">
             <p className="mb-4 text-sm font-medium uppercase tracking-[0.3em] text-purple-400">
-              Selected Work
+              {t.label}
             </p>
 
             <h1 className="text-4xl font-semibold tracking-[-0.03em] sm:text-5xl lg:text-6xl">
-              Projects with{" "}
+              {t.heading}{" "}
               <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent">
-                a reason to exist.
+                {t.highlight}
               </span>
             </h1>
 
             <p className="mx-auto mt-6 max-w-3xl text-base leading-8 text-zinc-400 sm:text-lg">
-              Client products, community software and technical projects — each
-              built around a different problem, constraint or learning goal.
+              {t.description}
             </p>
           </div>
         </RevealOnScroll>
 
-        {/* ===================================================
+        {/* =====================================================
             FEATURED PROJECTS
-        =================================================== */}
+        ===================================================== */}
+
         <div className="space-y-8">
           {/* CLIENT COMMERCE */}
           <RevealOnScroll>
@@ -526,26 +668,26 @@ export default function ProjectsPage() {
                       variant="outline"
                       className="border-purple-400/30 bg-purple-400/10 text-purple-300"
                     >
-                      Featured Case Study
+                      {t.featured}
                     </Badge>
 
                     <Badge
                       variant="outline"
                       className="border-white/10 bg-white/[0.03] text-zinc-300"
                     >
-                      Web + Android
+                      {t.webAndroid}
                     </Badge>
 
                     <Badge
                       variant="outline"
                       className="border-white/10 bg-white/[0.03] text-zinc-300"
                     >
-                      Real Clients
+                      {t.realClients}
                     </Badge>
                   </div>
 
-                  <h2 className="text-3xl font-semibold text-white tracking-tight sm:text-4xl">
-                    Client Commerce Platforms
+                  <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+                    {t.commerce.title}
                   </h2>
 
                   <p className="mt-2 font-medium text-zinc-300">
@@ -553,10 +695,7 @@ export default function ProjectsPage() {
                   </p>
 
                   <p className="mt-5 max-w-xl text-sm leading-7 text-zinc-400 sm:text-base">
-                    Two complete commerce ecosystems designed and developed
-                    end-to-end for small businesses, combining web, Android,
-                    administration, AI-assisted workflows, notifications,
-                    ordering and cost-conscious infrastructure.
+                    {t.commerce.description}
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-2">
@@ -567,7 +706,7 @@ export default function ProjectsPage() {
                       "Supabase",
                       "Firebase FCM",
                       "Caching",
-                      "0 CHF Goal",
+                      t.commerce.cost,
                     ].map((item) => (
                       <Badge
                         key={item}
@@ -580,16 +719,20 @@ export default function ProjectsPage() {
                   </div>
 
                   <Link
-                    to="/projects/client-commerce"
+                    to={localizedPath("/projects/client-commerce")}
                     className="mt-8 inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-white transition-all hover:border-purple-400/30 hover:bg-white/[0.06]"
                   >
-                    View case study
+                    {t.caseStudy}
                     <ArrowRight className="size-4" />
                   </Link>
                 </div>
 
                 <div className="p-5 lg:p-7">
-                  <ProjectGallery images={commerceImages} />
+                  <ProjectGallery
+                    images={commerceImages}
+                    language={lang}
+                    t={t}
+                  />
                 </div>
               </div>
             </Card>
@@ -605,24 +748,23 @@ export default function ProjectsPage() {
                       variant="outline"
                       className="border-purple-400/30 bg-purple-400/10 text-purple-300"
                     >
-                      Personal Community Project
+                      {t.community}
                     </Badge>
 
                     <Badge
                       variant="outline"
                       className="border-white/10 bg-white/[0.03] text-zinc-300"
                     >
-                      Web + Android
+                      {t.webAndroid}
                     </Badge>
                   </div>
 
-                  <h2 className="text-3xl font-semibold text-white">Bhajans</h2>
+                  <h2 className="text-3xl font-semibold text-white">
+                    Bhajans
+                  </h2>
 
                   <p className="mt-5 max-w-xl text-sm leading-7 text-zinc-400 sm:text-base">
-                    A devotional lyrics platform created for my spiritual
-                    community, making a large shared collection of songs
-                    searchable and accessible anywhere instead of relying on
-                    cumbersome song files.
+                    {t.bhajans.description}
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-2">
@@ -630,8 +772,8 @@ export default function ProjectsPage() {
                       "React",
                       "React Native",
                       "Expo",
-                      "Search",
-                      "Multilingual",
+                      t.bhajans.search,
+                      t.bhajans.multilingual,
                     ].map((item) => (
                       <Badge
                         key={item}
@@ -644,10 +786,10 @@ export default function ProjectsPage() {
                   </div>
 
                   <Link
-                    to="/projects/bhajans"
+                    to={localizedPath("/projects/bhajans")}
                     className="mt-8 inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm font-medium text-white transition-all hover:border-purple-400/30 hover:bg-white/[0.06]"
                   >
-                    View case study
+                    {t.caseStudy}
                     <ArrowRight className="size-4" />
                   </Link>
                 </div>
@@ -657,7 +799,11 @@ export default function ProjectsPage() {
                     <HeartHandshake className="mx-auto size-8 text-purple-400" />
 
                     <div className="p-5 lg:p-7">
-                      <ProjectGallery images={bhajansImages} />
+                      <ProjectGallery
+                        images={bhajansImages}
+                        language={lang}
+                        t={t}
+                      />
                     </div>
                   </div>
                 </div>
@@ -666,28 +812,35 @@ export default function ProjectsPage() {
           </RevealOnScroll>
         </div>
 
-        {/* ===================================================
+        {/* =====================================================
             MORE PROJECTS
-        =================================================== */}
+        ===================================================== */}
+
         <RevealOnScroll>
           <div className="mb-8 mt-20">
             <p className="mb-3 text-sm font-medium uppercase tracking-[0.3em] text-purple-400">
-              More Projects
+              {t.more}
             </p>
 
             <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-              Smaller projects, experiments and{" "}
-              <span className="text-zinc-500">continued learning.</span>
+              {t.moreHeading}{" "}
+              <span className="text-zinc-500">
+                {t.moreHighlight}
+              </span>
             </h2>
           </div>
         </RevealOnScroll>
 
         <div className="grid gap-6 md:grid-cols-2">
           {smallerProjects.map((project) => (
-            <RevealOnScroll key={project.title}>
+            <RevealOnScroll key={project.id}>
               <Card className="h-full overflow-hidden border-white/10 bg-zinc-950/60 shadow-none transition-all duration-300 hover:-translate-y-1 hover:border-white/20">
                 <div className="p-4">
-                  <ProjectGallery images={project.images} />
+                  <ProjectGallery
+                    images={project.images}
+                    language={lang}
+                    t={t}
+                  />
                 </div>
 
                 <CardHeader>
@@ -700,7 +853,7 @@ export default function ProjectsPage() {
                       href={project.href}
                       target="_blank"
                       rel="noreferrer"
-                      aria-label={`Open ${project.title} repository`}
+                      aria-label={`${t.openRepository}: ${project.title}`}
                       className="flex size-9 shrink-0 items-center justify-center rounded-lg border border-white/10 text-zinc-500 transition-colors hover:bg-white/5 hover:text-white"
                     >
                       <ArrowUpRight className="size-4" />
@@ -710,7 +863,7 @@ export default function ProjectsPage() {
 
                 <CardContent>
                   <p className="text-sm leading-7 text-zinc-400">
-                    {project.description}
+                    {project.description[lang]}
                   </p>
 
                   <div className="mt-5 flex flex-wrap gap-2">
@@ -743,7 +896,7 @@ export default function ProjectsPage() {
                         rel="noreferrer"
                         className="inline-flex items-center gap-2 rounded-lg border border-purple-400/20 bg-purple-400/10 px-3 py-2 text-sm font-medium text-purple-300 transition-colors hover:bg-purple-400/15 hover:text-purple-200"
                       >
-                        Live project
+                        {t.liveProject}
                         <ArrowUpRight className="size-4" />
                       </a>
                     )}

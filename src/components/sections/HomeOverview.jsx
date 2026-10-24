@@ -6,6 +6,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useLanguage } from "@/i18n/useLanguage";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -16,7 +17,52 @@ import {
 
 import { RevealOnScroll } from "../RevealOnScroll";
 
+const copy = {
+  en: {
+    aboutLabel: "About Me", aboutTitle1: "Engineer first.", aboutTitle2: "Technology evolves.",
+    aboutLead: "My engineering journey started with", aboutStrong: "Java and enterprise systems",
+    aboutBody: "and has grown into modern full-stack and mobile development. I enjoy understanding a problem deeply, simplifying it and building software that is practical to use and maintain.",
+    aboutLink: "More about me", featured: "Featured Work", featuredTitle: "From idea to working product.",
+    featuredDescription: "Recent work includes complete web and Android products, community software and full-stack applications.",
+    allProjects: "All Projects", clientLabel: "Client Projects", commerceTitle: "Commerce Platforms",
+    commerceDescription: "Two end-to-end commerce ecosystems built for real clients, covering storefronts, admin tools, orders, mobile apps, notifications, AI-assisted workflows and cost-conscious infrastructure.",
+    caseStudy: "View case study", communityLabel: "Community Project",
+    bhajansDescription: "A multilingual web and Android application that makes a large devotional song library easy to search, read, navigate and maintain for my spiritual community.",
+    bhajansSkills: ["Web", "Android", "Search", "Multilingual", "Transliteration"],
+    experienceLabel: "Experience", experienceTitle1: "Enterprise roots.", experienceTitle2: "Modern product development.",
+    fullExperience: "Full Experience", now: "2023 — Present", earlier: "Earlier", switzerland: "Switzerland",
+    independent: "Freelance / Independent Software Engineer", support: "Software Engineer · Production Support / Integration",
+    application: "Software Engineer · Application Management / Java", earlierRole: "Java Software Engineering",
+    contactTitle: "Interested in working together?",
+    contactDescription: "I'm based in Mägenwil, Aargau and open to software engineering opportunities, freelance work and interesting technical conversations.",
+    getInTouch: "Get In Touch",
+  },
+  de: {
+    aboutLabel: "Über mich", aboutTitle1: "Ingenieurin aus Überzeugung.", aboutTitle2: "Technologien entwickeln sich weiter.",
+    aboutLead: "Mein beruflicher Weg begann mit", aboutStrong: "Java und Enterprise-Systemen",
+    aboutBody: "und führte mich zur modernen Full-Stack- und Mobilentwicklung. Ich analysiere Probleme gründlich, vereinfache komplexe Abläufe und entwickle Software, die sich gut nutzen und warten lässt.",
+    aboutLink: "Mehr über mich", featured: "Ausgewählte Projekte", featuredTitle: "Von der Idee zur fertigen Anwendung.",
+    featuredDescription: "Zu meinen aktuellen Projekten gehören vollständige Web- und Android-Anwendungen, Software für eine Gemeinschaft sowie Full-Stack-Lösungen.",
+    allProjects: "Alle Projekte", clientLabel: "Kundenprojekte", commerceTitle: "E-Commerce-Plattformen",
+    commerceDescription: "Zwei vollständige E-Commerce-Lösungen für Kunden – mit Onlineshops, Administrationsoberflächen, Bestellungen, mobilen Apps, Benachrichtigungen, KI-gestützten Funktionen und kosteneffizienter Infrastruktur.",
+    caseStudy: "Projekt im Detail", communityLabel: "Gemeinschaftsprojekt",
+    bhajansDescription: "Eine mehrsprachige Web- und Android-Anwendung, mit der meine Gemeinschaft eine umfangreiche Sammlung spiritueller Lieder einfach durchsuchen, lesen und verwalten kann.",
+    bhajansSkills: ["Web", "Android", "Suche", "Mehrsprachigkeit", "Transliteration"],
+    experienceLabel: "Berufserfahrung", experienceTitle1: "Erfahrung mit Enterprise-Systemen.", experienceTitle2: "Moderne Produktentwicklung.",
+    fullExperience: "Berufserfahrung ansehen", now: "2023 — heute", earlier: "Früher", switzerland: "Schweiz",
+    independent: "Freiberufliche / selbstständige Softwareentwicklerin", support: "Softwareentwicklerin · Produktionssupport / Integration",
+    application: "Softwareentwicklerin · Anwendungsbetreuung / Java", earlierRole: "Java-Softwareentwicklung",
+    contactTitle: "Interesse an einer Zusammenarbeit?",
+    contactDescription: "Ich lebe in Mägenwil im Kanton Aargau und bin offen für Stellen in der Softwareentwicklung, freiberufliche Projekte und fachlichen Austausch.",
+    getInTouch: "Kontakt aufnehmen",
+  },
+};
+
 export const HomeOverview = () => {
+  const { language } = useLanguage();
+  const t = copy[language] ?? copy.en;
+  const localizedPath = (path) => language === "de" ? `${path}?lang=de` : path;
+
   return (
     <>
       {/* =====================================================
@@ -28,25 +74,23 @@ export const HomeOverview = () => {
             <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.28em] text-purple-400">
-                  About Me
+                  {t.aboutLabel}
                 </p>
 
                 <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                  Engineer first.
+                  {t.aboutTitle1}
                   <br />
-                  Technology evolves.
+                  {t.aboutTitle2}
                 </h2>
               </div>
 
               <div>
                 <p className="max-w-2xl text-base leading-8 text-zinc-400">
-                  My engineering journey started with{" "}
+                  {t.aboutLead}{" "}
                   <strong className="font-medium text-zinc-200">
-                    Java and enterprise systems
+                    {t.aboutStrong}
                   </strong>{" "}
-                  and has grown into modern full-stack and mobile development.
-                  I enjoy understanding a problem deeply, simplifying it and
-                  building software that is practical to use and maintain.
+                  {t.aboutBody}
                 </p>
 
                 <div className="mt-7 flex flex-wrap gap-2">
@@ -72,10 +116,10 @@ export const HomeOverview = () => {
                 <Button
                   variant="link"
                   nativeButton={false}
-                  render={<Link to="/about" />}
+                  render={<Link to={localizedPath("/about")} />}
                   className="mt-6 h-auto p-0 text-purple-300 hover:text-purple-200"
                 >
-                  More about me
+                  {t.aboutLink}
                   <ArrowRight className="ml-2 size-4" />
                 </Button>
               </div>
@@ -93,26 +137,25 @@ export const HomeOverview = () => {
             <div className="mb-12 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
               <div>
                 <p className="text-sm font-medium uppercase tracking-[0.28em] text-purple-400">
-                  Featured Work
+                  {t.featured}
                 </p>
 
                 <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                  From idea to working product.
+                  {t.featuredTitle}
                 </h2>
 
                 <p className="mt-4 max-w-2xl leading-7 text-zinc-400">
-                  Recent work includes complete web and Android products,
-                  community software and full-stack applications.
+                  {t.featuredDescription}
                 </p>
               </div>
 
               <Button
                 variant="outline"
                 nativeButton={false}
-                render={<Link to="/projects" />}
+                render={<Link to={localizedPath("/projects")} />}
                 className="border-white/15 bg-white/[0.02] text-zinc-200"
               >
-                All Projects
+                {t.allProjects}
                 <ArrowRight className="ml-2 size-4" />
               </Button>
             </div>
@@ -130,19 +173,16 @@ export const HomeOverview = () => {
                       variant="outline"
                       className="border-purple-400/20 text-purple-300"
                     >
-                      Client Projects
+                      {t.clientLabel}
                     </Badge>
                   </div>
 
                   <h3 className="mt-7 text-2xl font-semibold text-white">
-                    Commerce Platforms
+                    {t.commerceTitle}
                   </h3>
 
                   <p className="mt-3 leading-7 text-zinc-400">
-                    Two end-to-end commerce ecosystems built for real clients,
-                    covering storefronts, admin tools, orders, mobile apps,
-                    notifications, AI-assisted workflows and cost-conscious
-                    infrastructure.
+                    {t.commerceDescription}
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-2">
@@ -166,10 +206,10 @@ export const HomeOverview = () => {
                   <Button
                     variant="link"
                     nativeButton={false}
-                    render={<Link to="/projects/client-commerce" />}
+                    render={<Link to={localizedPath("/projects/client-commerce")} />}
                     className="mt-7 h-auto p-0 text-purple-300"
                   >
-                    View case study
+                    {t.caseStudy}
                     <ArrowRight className="ml-2 size-4" />
                   </Button>
                 </CardContent>
@@ -187,7 +227,7 @@ export const HomeOverview = () => {
                       variant="outline"
                       className="border-blue-400/20 text-blue-300"
                     >
-                      Community Project
+                      {t.communityLabel}
                     </Badge>
                   </div>
 
@@ -196,9 +236,7 @@ export const HomeOverview = () => {
                   </h3>
 
                   <p className="mt-3 leading-7 text-zinc-400">
-                    A multilingual web and Android application that makes a
-                    large devotional song library easy to search, read,
-                    navigate and maintain for my spiritual community.
+                    {t.bhajansDescription}
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-2">
@@ -222,10 +260,10 @@ export const HomeOverview = () => {
                   <Button
                     variant="link"
                     nativeButton={false}
-                    render={<Link to="/projects/bhajans" />}
+                    render={<Link to={localizedPath("/projects/bhajans")} />}
                     className="mt-7 h-auto p-0 text-blue-300"
                   >
-                    View case study
+                    {t.caseStudy}
                     <ArrowRight className="ml-2 size-4" />
                   </Button>
                 </CardContent>
@@ -248,48 +286,48 @@ export const HomeOverview = () => {
                 </div>
 
                 <p className="mt-6 text-sm font-medium uppercase tracking-[0.28em] text-purple-400">
-                  Experience
+                  {t.experienceLabel}
                 </p>
 
                 <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
-                  Enterprise roots.
+                  {t.experienceTitle1}
                   <br />
-                  Modern product development.
+                  {t.experienceTitle2}
                 </h2>
 
                 <Button
                   variant="outline"
                   nativeButton={false}
-                  render={<Link to="/experience" />}
+                  render={<Link to={localizedPath("/experience")} />}
                   className="mt-8 border-white/15 bg-white/[0.02] text-zinc-200"
                 >
-                  Full Experience
+                  {t.fullExperience}
                   <ArrowRight className="ml-2 size-4" />
                 </Button>
               </div>
 
               <div className="space-y-3">
                 <CareerRow
-                  period="2023 — Present"
-                  title="Freelance / Independent Software Engineer"
-                  company="Switzerland"
+                  period={t.now}
+                  title={t.independent}
+                  company={t.switzerland}
                 />
 
                 <CareerRow
                   period="2017 — 2022"
-                  title="Software Engineer · Production Support / Integration"
+                  title={t.support}
                   company="Credit Suisse · Cognizant Switzerland"
                 />
 
                 <CareerRow
                   period="2013 — 2017"
-                  title="Software Engineer · Application Management / Java"
+                  title={t.application}
                   company="Credit Suisse · Cognizant Switzerland"
                 />
 
                 <CareerRow
-                  period="Earlier"
-                  title="Java Software Engineering"
+                  period={t.earlier}
+                  title={t.earlierRole}
                   company="Meyer Burger · Applied Materials · Cisco"
                 />
               </div>
@@ -313,22 +351,20 @@ export const HomeOverview = () => {
               <Mail className="relative mx-auto size-7 text-purple-300" />
 
               <h2 className="relative mt-5 text-3xl font-semibold text-white sm:text-4xl">
-                Interested in working together?
+                {t.contactTitle}
               </h2>
 
               <p className="relative mx-auto mt-4 max-w-xl leading-7 text-zinc-400">
-                I&apos;m based in Mägenwil, Aargau and open to software
-                engineering opportunities, freelance work and interesting
-                technical conversations.
+                {t.contactDescription}
               </p>
 
               <Button
                 size="lg"
                 nativeButton={false}
-                render={<Link to="/contact" />}
+                render={<Link to={localizedPath("/contact")} />}
                 className="relative mt-8 bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 text-white"
               >
-                Get In Touch
+                {t.getInTouch}
                 <ArrowRight className="ml-2 size-4" />
               </Button>
             </div>
