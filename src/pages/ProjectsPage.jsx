@@ -73,6 +73,31 @@ import supportdeskTicket from "@/assets/projects/supportdesk-ticket-detail.png";
 import supportdeskAdmin from "@/assets/projects/supportdesk-admin.png";
 
 // =====================================================
+// CAREERPILOT AI
+// =====================================================
+
+import careerDashboard from "@/assets/projects/01-dashboard.png";
+import careerFindJobs from "@/assets/projects/02-find-jobs.png";
+import careerPasteJob from "@/assets/projects/03-paste-job.png";
+import careerSavedJobs from "@/assets/projects/04-saved-jobs.png";
+import careerAgent from "@/assets/projects/05-ai-agent.png";
+import careerCv from "@/assets/projects/06-cv-generation.png";
+import careerPdf from "@/assets/projects/07-pdf-output.png";
+import careerTracker from "@/assets/projects/08-application-tracker.png";
+
+// =====================================================
+// ASU GUITAR LAB
+// =====================================================
+
+import guitarHome from "@/assets/projects/guitar-home.png";
+import guitarDark from "@/assets/projects/guitar-dark.png";
+import guitarBars from "@/assets/projects/guitar-bars.png";
+import guitarChords from "@/assets/projects/guitar-chords.png";
+import guitarBarEdit from "@/assets/projects/guitar-baredit.png";
+import guitarChordEdit from "@/assets/projects/guitar-chordedit.png";
+import guitarPdf from "@/assets/projects/guitar-pdfonly.png";
+
+// =====================================================
 // PAGE TRANSLATIONS
 // =====================================================
 
@@ -333,10 +358,151 @@ const supportdeskImages = [
 ];
 
 // =====================================================
+// CAREERPILOT AI GALLERY
+// =====================================================
+
+const careerPilotImages = [
+  galleryImage(
+    careerDashboard,
+    "CareerPilot AI career dashboard",
+    "CareerPilot AI – Karriere-Dashboard",
+  ),
+  galleryImage(
+    careerFindJobs,
+    "Swiss job search and matching",
+    "Stellensuche und Job-Matching",
+  ),
+  galleryImage(
+    careerPasteJob,
+    "Import an external job advertisement",
+    "Externe Stellenanzeige importieren",
+  ),
+  galleryImage(
+    careerSavedJobs,
+    "Saved jobs and application statuses",
+    "Gespeicherte Stellen und Bewerbungsstatus",
+  ),
+  galleryImage(
+    careerAgent,
+    "Gemini AI agent with function calling",
+    "Gemini-KI-Agent mit Function Calling",
+  ),
+  galleryImage(
+    careerCv,
+    "AI-generated CV and motivation letter",
+    "KI-generierter Lebenslauf und Motivationsschreiben",
+  ),
+  galleryImage(
+    careerPdf,
+    "Professional PDF CV export",
+    "Professioneller Lebenslauf als PDF",
+  ),
+  galleryImage(
+    careerTracker,
+    "Application tracking and archiving",
+    "Bewerbungsverfolgung und Archivierung",
+  ),
+];
+
+// =====================================================
+// ASU GUITAR LAB GALLERY
+// =====================================================
+
+const guitarLabImages = [
+  galleryImage(
+    guitarHome,
+    "Asu Guitar Lab magical light theme",
+    "Asu Guitar Lab – magisches helles Design",
+  ),
+  galleryImage(
+    guitarDark,
+    "Asu Guitar Lab midnight theme",
+    "Asu Guitar Lab – dunkles Design",
+  ),
+  galleryImage(
+    guitarBars,
+    "Interactive guitar tablature",
+    "Interaktive Gitarrentabulatur",
+  ),
+  galleryImage(
+    guitarChords,
+    "Guitar chords and lyrics",
+    "Gitarrenakkorde und Liedtexte",
+  ),
+  galleryImage(
+    guitarBarEdit,
+    "Melody and tablature editor",
+    "Melodie- und Tabulatur-Editor",
+  ),
+  galleryImage(
+    guitarChordEdit,
+    "Interactive chord editor",
+    "Interaktiver Akkord-Editor",
+  ),
+  galleryImage(
+    guitarPdf,
+    "PDF guitar practice viewer",
+    "PDF-Anzeige zum Gitarreüben",
+  ),
+];
+
+// =====================================================
 // SMALLER PROJECTS
 // =====================================================
 
 const smallerProjects = [
+  // =====================================================
+  // CAREERPILOT AI
+  // =====================================================
+
+  {
+    id: "careerpilot",
+    title: "CareerPilot AI",
+    description: {
+      en: "An agentic AI-powered job application assistant that uses Google Gemini function calling to analyse vacancies, evaluate candidate suitability, generate tailored CVs and motivation letters in English or German, and manage applications. Built with human-in-the-loop approval, local-first storage, PDF exports, authentication and JSON archiving.",
+
+      de: "Ein agentenbasierter KI-Bewerbungsassistent mit Google Gemini und Function Calling. Die Anwendung analysiert Stellenanzeigen, bewertet die Eignung von Bewerbenden, erstellt individuelle Lebensläufe und Motivationsschreiben auf Deutsch oder Englisch und unterstützt die Bewerbungsverwaltung. Mit menschlicher Freigabe, lokaler Datenspeicherung, PDF-Export, Authentifizierung und JSON-Archivierung.",
+    },
+    tags: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Google Gemini",
+      "AI Agents",
+      "Function Calling",
+      "Tailwind CSS",
+      "PDF",
+    ],
+    href: "https://github.com/A-nu-1/careerpilot-ai",
+    live: "https://careerpilot-ai-eta-ten.vercel.app/",
+    images: careerPilotImages,
+  },
+
+  // =====================================================
+  // ASU GUITAR LAB
+  // =====================================================
+
+  {
+    id: "asuguitar",
+    title: "Asu Guitar Lab",
+    description: {
+      en: "An offline-first guitar practice application built with Next.js and Electron. Features interactive guitar tablature, editable chord sheets, lyrics, PDF viewing and automatic scrolling. The Windows desktop application uses SQLite for local song storage, while a magical-themed web demo showcases the practice experience.",
+
+      de: "Eine Offline-First-Anwendung zum Gitarreüben, entwickelt mit Next.js und Electron. Sie bietet interaktive Gitarrentabulaturen, bearbeitbare Akkordblätter, Liedtexte, PDF-Anzeige und automatisches Scrollen. Die Windows-Desktop-Anwendung nutzt SQLite zur lokalen Speicherung von Liedern. Eine Web-Demo mit fantasievollem Design zeigt die Übungsfunktionen.",
+    },
+    tags: [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Electron",
+      "SQLite",
+      "PDF.js",
+      "Desktop App",
+    ],
+    href: "https://github.com/A-nu-1/asuguitar",
+    live: "https://asuguitar.vercel.app/",
+    images: guitarLabImages,
+  },
   {
     id: "supportdesk",
     title: "SupportDesk",
